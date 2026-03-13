@@ -7,446 +7,135 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Frontier Investment - SOXL</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+KR:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+KR:wght@300;400;700&display=swap');
+:root {
+  --bg:#0a0e1a; --card:#141c35; --border:#1e2d55;
+  --accent:#00d4ff; --accent2:#ff6b35; --accent3:#00ff88;
+  --text:#c8d8f0; --dim:#5a7090; --danger:#ff4466; --gold:#ffd700;
+  --mono:'Share Tech Mono',monospace; --sans:'Noto Sans KR',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:16px 12px 100px;}
 
-  :root {
-    --bg: #0a0e1a;
-    --surface: #0f1628;
-    --card: #141c35;
-    --border: #1e2d55;
-    --accent: #00d4ff;
-    --accent2: #ff6b35;
-    --accent3: #00ff88;
-    --text: #c8d8f0;
-    --text-dim: #5a7090;
-    --danger: #ff4466;
-    --gold: #ffd700;
-    --mono: 'Share Tech Mono', monospace;
-    --sans: 'Noto Sans KR', sans-serif;
-  }
+/* HEADER */
+.header{text-align:center;padding:16px 0 12px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+.brand{font-size:10px;color:var(--dim);letter-spacing:4px;text-transform:uppercase;margin-bottom:3px;}
+.ticker{font-family:var(--mono);font-size:32px;color:var(--accent);letter-spacing:8px;text-shadow:0 0 20px rgba(0,212,255,0.4);}
+.subtitle{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+.card.gold::before{background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.card.orange::before{background:linear-gradient(90deg,transparent,var(--accent2),transparent);}
+.card-label{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+/* API KEY CARD */
+.apikey-header{display:flex;align-items:center;gap:10px;}
+.apikey-title{font-size:12px;color:var(--text);font-weight:700;}
+.apikey-desc{font-size:10px;color:var(--dim);margin-top:2px;}
+.apikey-desc a{color:var(--accent);}
+.toggle-btn{margin-left:auto;background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.35);border-radius:16px;color:var(--gold);font-family:var(--sans);font-size:11px;padding:4px 14px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background 0.2s;}
+.toggle-btn:active{background:rgba(255,215,0,0.25);}
+.toggle-btn.saved{background:rgba(0,255,136,0.1);border-color:rgba(0,255,136,0.3);color:var(--accent3);}
+.apikey-body{margin-top:12px;display:none;}
+.apikey-body.open{display:block;}
+.apikey-status{margin-top:6px;font-size:10px;font-family:var(--mono);color:var(--dim);}
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
+/* HIGH PRICE */
+.price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:10px;}
+.price-big{font-family:var(--mono);font-size:30px;color:var(--accent);text-shadow:0 0 12px rgba(0,212,255,0.3);}
+.price-unit{font-size:13px;color:var(--dim);}
+.price-meta{display:flex;gap:10px;align-items:center;margin-bottom:10px;}
+.cur-price{font-family:var(--mono);font-size:14px;color:var(--accent3);}
+.cur-label{font-size:10px;color:var(--dim);}
+.auto-badge{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--accent3);background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);border-radius:20px;padding:3px 10px;}
+.auto-badge .dot{width:5px;height:5px;background:var(--accent3);border-radius:50%;animation:blink 1s infinite;}
+.manual-badge{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--gold);background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.25);border-radius:20px;padding:3px 10px;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 
-  .container {
-    position: relative;
-    z-index: 1;
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 16px 12px 100px;
-  }
+.fetch-btn{display:flex;align-items:center;gap:6px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);border-radius:20px;color:var(--accent);font-family:var(--sans);font-size:12px;padding:6px 14px;cursor:pointer;width:100%;justify-content:center;letter-spacing:1px;margin-bottom:10px;}
+.fetch-btn:active{background:rgba(0,212,255,0.2);}
+.fetch-btn .dot{width:6px;height:6px;background:var(--accent3);border-radius:50%;animation:blink 1.5s infinite;}
 
-  .header {
-    text-align: center;
-    padding: 18px 0 14px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 16px;
-  }
-  .brand {
-    font-family: var(--sans);
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-  .ticker {
-    font-family: var(--mono);
-    font-size: 34px;
-    color: var(--accent);
-    letter-spacing: 8px;
-    text-shadow: 0 0 20px rgba(0,212,255,0.5);
-  }
-  .subtitle {
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
+.divider{display:flex;align-items:center;gap:8px;margin:8px 0;}
+.divider-line{flex:1;height:1px;background:var(--border);}
+.divider-text{font-size:9px;color:var(--dim);letter-spacing:1px;}
 
-  .price-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 6px;
-    position: relative;
-    overflow: hidden;
-  }
-  .price-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  }
-  .card-label {
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .high-price-row {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-  }
-  .high-price {
-    font-family: var(--mono);
-    font-size: 32px;
-    color: var(--accent);
-    text-shadow: 0 0 12px rgba(0,212,255,0.3);
-  }
-  .price-unit { font-size: 14px; color: var(--text-dim); }
+/* MANUAL INPUT */
+.manual-row{display:flex;align-items:center;gap:8px;}
+.manual-sign{font-family:var(--mono);font-size:18px;color:var(--accent2);}
+.manual-inp{flex:1;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:18px;padding:7px 10px;outline:none;text-align:right;}
+.manual-inp:focus{border-color:var(--accent);}
+.manual-inp.override{border-color:var(--gold);color:var(--gold);}
+.apply-btn{background:rgba(0,212,255,0.15);border:1px solid rgba(0,212,255,0.4);border-radius:8px;color:var(--accent);font-family:var(--sans);font-size:12px;padding:7px 14px;cursor:pointer;white-space:nowrap;}
+.apply-btn:active{background:rgba(0,212,255,0.25);}
+.clear-btn{background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.3);border-radius:8px;color:var(--danger);font-family:var(--sans);font-size:12px;padding:7px 12px;cursor:pointer;white-space:nowrap;}
+.clear-btn:active{background:rgba(255,68,102,0.2);}
+.override-notice{margin-top:8px;font-size:11px;color:var(--gold);background:rgba(255,215,0,0.07);border:1px solid rgba(255,215,0,0.2);border-radius:6px;padding:6px 10px;display:none;}
+.override-notice.show{display:block;}
 
-  .update-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(0,212,255,0.1);
-    border: 1px solid rgba(0,212,255,0.3);
-    border-radius: 20px;
-    color: var(--accent);
-    font-family: var(--sans);
-    font-size: 12px;
-    padding: 6px 14px;
-    cursor: pointer;
-    margin-top: 10px;
-    width: 100%;
-    justify-content: center;
-    letter-spacing: 1px;
-  }
-  .update-btn:active { background: rgba(0,212,255,0.2); transform: scale(0.98); }
-  .update-btn .dot {
-    width: 6px; height: 6px;
-    background: var(--accent3);
-    border-radius: 50%;
-    animation: blink 1.5s infinite;
-  }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+/* TIMESTAMP */
+.timestamp{text-align:center;font-family:var(--mono);font-size:10px;color:var(--dim);padding:4px;letter-spacing:1px;margin-bottom:8px;}
+.next-update{font-size:9px;color:rgba(90,112,144,0.6);}
 
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 10px 0 8px;
-  }
-  .divider-line { flex: 1; height: 1px; background: var(--border); }
-  .divider-text { font-size: 9px; color: var(--text-dim); letter-spacing: 1px; }
+/* CHART */
+.chart-title{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.chart-placeholder{height:200px;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:12px;letter-spacing:1px;background:rgba(0,0,0,0.15);border-radius:8px;border:1px dashed var(--border);}
+#priceChart{display:none;width:100%;border-radius:6px;}
+.chart-legend{display:none;flex-wrap:wrap;gap:10px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+.legend-item{display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9px;color:var(--dim);}
+.legend-line{width:14px;height:2px;border-radius:1px;}
 
-  .manual-input-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .manual-label { font-size: 11px; color: var(--text-dim); }
-  .manual-price-input {
-    flex: 1;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 18px;
-    padding: 8px 12px;
-    outline: none;
-    text-align: right;
-  }
-  .manual-price-input:focus { border-color: var(--accent); }
-  .apply-btn {
-    background: rgba(0,212,255,0.15);
-    border: 1px solid rgba(0,212,255,0.4);
-    border-radius: 8px;
-    color: var(--accent);
-    font-family: var(--sans);
-    font-size: 12px;
-    padding: 8px 14px;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  .apply-btn:active { background: rgba(0,212,255,0.25); }
+/* ASSET INPUT */
+.input-label{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+.input-label span{color:var(--accent3);font-family:var(--mono);}
+.asset-wrap{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:8px;padding:0 12px;}
+.dollar{font-family:var(--mono);font-size:20px;color:var(--accent2);}
+.asset-inp{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:22px;padding:10px 0;width:100%;}
+.asset-inp::placeholder{color:var(--dim);}
+.per-trade{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);border-radius:8px;padding:7px 12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;}
+.per-trade-label{font-size:11px;color:var(--dim);}
+.per-trade-val{font-family:var(--mono);font-size:15px;color:var(--accent3);}
 
-  .timestamp {
-    text-align: center;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-dim);
-    padding: 6px;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-  }
+/* STATUS CHIPS */
+.chips{display:flex;gap:8px;margin-bottom:10px;}
+.chip{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px 8px;text-align:center;}
+.chip-label{font-size:9px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
+.chip-val{font-family:var(--mono);font-size:13px;color:var(--text);}
+.chip-val.green{color:var(--accent3);}
+.chip-val.orange{color:var(--accent2);}
 
-  /* ── CHART ── */
-  .chart-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 10px 12px;
-    margin-bottom: 12px;
-    position: relative;
-    overflow: hidden;
-  }
-  .chart-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent2), transparent);
-  }
-  .chart-title {
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  .chart-placeholder {
-    height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-dim);
-    font-size: 12px;
-    letter-spacing: 1px;
-    background: rgba(0,0,0,0.15);
-    border-radius: 8px;
-    border: 1px dashed var(--border);
-  }
-  #priceChart { display: none; width: 100%; border-radius: 6px; }
+/* TABLE */
+.section-title{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;padding-left:4px;}
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;}
+.table-head{display:grid;grid-template-columns:40px 1fr 80px 72px;padding:9px 12px;background:rgba(0,212,255,0.05);border-bottom:1px solid var(--border);}
+.th{font-size:9px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;text-align:right;}
+.th:first-child{text-align:left;}
+.trow{display:grid;grid-template-columns:40px 1fr 80px 72px;padding:10px 12px;border-bottom:1px solid rgba(30,45,85,0.5);align-items:center;}
+.trow:last-child{border-bottom:none;}
+.trow:active{background:rgba(0,212,255,0.04);}
+.rnum{font-family:var(--mono);font-size:11px;color:var(--dim);}
+.rprice{font-family:var(--mono);font-size:14px;color:var(--text);}
+.rbadge{font-family:var(--mono);font-size:10px;padding:2px 5px;border-radius:4px;margin-top:2px;display:inline-block;}
+.rqty{font-family:var(--mono);font-size:14px;color:var(--accent3);text-align:right;}
+.ramt{font-family:var(--mono);font-size:11px;color:var(--dim);text-align:right;margin-top:1px;}
+.rt{text-align:right;}
 
-  .chart-legend {
-    display: none;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
-    padding-top: 8px;
-    border-top: 1px solid var(--border);
-  }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-family: var(--mono);
-    font-size: 9px;
-    color: var(--text-dim);
-  }
-  .legend-line { width: 16px; height: 2px; border-radius: 1px; }
-  .legend-dash { width: 16px; height: 0; border-top: 2px dashed; border-radius: 0; }
+/* ERROR / INFO */
+.msg{border-radius:8px;padding:9px 14px;font-size:12px;margin-bottom:10px;display:none;}
+.msg.show{display:block;}
+.msg.error{background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.3);color:var(--danger);}
+.msg.info{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.3);color:var(--accent3);}
 
-  /* Input */
-  .input-group {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin-bottom: 12px;
-  }
-  .input-label {
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .input-label span { color: var(--accent3); font-family: var(--mono); }
-  .asset-input-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0 12px;
-  }
-  .dollar-sign { font-family: var(--mono); font-size: 20px; color: var(--accent2); }
-  .asset-input {
-    flex: 1;
-    background: none;
-    border: none;
-    outline: none;
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 24px;
-    padding: 10px 0;
-    width: 100%;
-  }
-  .asset-input::placeholder { color: var(--text-dim); }
-  .per-trade {
-    background: rgba(0,255,136,0.08);
-    border: 1px solid rgba(0,255,136,0.2);
-    border-radius: 8px;
-    padding: 8px 12px;
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .per-trade-label { font-size: 11px; color: var(--text-dim); }
-  .per-trade-value { font-family: var(--mono); font-size: 16px; color: var(--accent3); }
-
-  .status-bar { display: flex; gap: 8px; margin-bottom: 12px; }
-  .status-chip {
-    flex: 1;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 8px;
-    text-align: center;
-  }
-  .status-chip-label { font-size: 9px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
-  .status-chip-value { font-family: var(--mono); font-size: 14px; color: var(--text); }
-  .status-chip-value.green { color: var(--accent3); }
-  .status-chip-value.orange { color: var(--accent2); }
-
-  .section-title {
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-    padding-left: 4px;
-  }
-
-  .table-section {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
-  .table-header {
-    display: grid;
-    grid-template-columns: 40px 1fr 80px 72px;
-    padding: 10px 12px;
-    background: rgba(0,212,255,0.05);
-    border-bottom: 1px solid var(--border);
-  }
-  .th {
-    font-size: 9px;
-    color: var(--text-dim);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    text-align: right;
-  }
-  .th:first-child { text-align: left; }
-  .table-row {
-    display: grid;
-    grid-template-columns: 40px 1fr 80px 72px;
-    padding: 10px 12px;
-    border-bottom: 1px solid rgba(30,45,85,0.5);
-    align-items: center;
-  }
-  .table-row:last-child { border-bottom: none; }
-  .table-row:active { background: rgba(0,212,255,0.05); }
-  .row-num { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
-  .buy-price { font-family: var(--mono); font-size: 15px; color: var(--text); }
-  .drop-badge {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 2px 5px;
-    border-radius: 4px;
-    margin-top: 2px;
-    display: inline-block;
-  }
-  .qty-value { font-family: var(--mono); font-size: 14px; color: var(--accent3); text-align: right; }
-  .amount-value { font-family: var(--mono); font-size: 11px; color: var(--text-dim); text-align: right; margin-top: 2px; }
-  .cell-right { text-align: right; }
-
-  .loading-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(10,14,26,0.85);
-    z-index: 100;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .loading-overlay.show { display: flex; }
-  .spinner {
-    width: 40px; height: 40px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-text { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 2px; }
-
-  .error-msg {
-    background: rgba(255,68,102,0.1);
-    border: 1px solid rgba(255,68,102,0.3);
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 12px;
-    color: var(--danger);
-    margin-bottom: 12px;
-    display: none;
-  }
-  .error-msg.show { display: block; }
-
-  /* API Key card */
-  .apikey-card {
-    background: var(--card);
-    border: 1px solid rgba(255,215,0,0.25);
-    border-radius: 12px;
-    padding: 12px 14px;
-    margin-bottom: 12px;
-    position: relative;
-    overflow: hidden;
-  }
-  .apikey-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(255,215,0,0.6), transparent);
-  }
-  .apikey-header { display: flex; align-items: center; gap: 10px; }
-  .apikey-icon { font-size: 18px; }
-  .apikey-title { font-size: 12px; color: var(--text); font-weight: 700; }
-  .apikey-desc  { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
-  .apikey-toggle {
-    margin-left: auto;
-    background: rgba(255,215,0,0.12);
-    border: 1px solid rgba(255,215,0,0.35);
-    border-radius: 16px;
-    color: var(--gold);
-    font-family: var(--sans);
-    font-size: 11px;
-    padding: 4px 12px;
-    cursor: pointer;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .apikey-toggle:active { background: rgba(255,215,0,0.22); }
-  .apikey-saved { border-color: rgba(0,255,136,0.35) !important; }
-  .apikey-saved::before { background: linear-gradient(90deg, transparent, rgba(0,255,136,0.5), transparent) !important; }
+/* LOADING */
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(10,14,26,0.82);z-index:100;justify-content:center;align-items:center;flex-direction:column;gap:14px;}
+.loading-overlay.show{display:flex;}
+.spinner{width:38px;height:38px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:2px;}
 </style>
 </head>
 <body>
@@ -456,124 +145,138 @@
   <div class="loading-text">가격 조회 중...</div>
 </div>
 
-<div class="container">
+<div class="wrap">
 
+  <!-- HEADER -->
   <div class="header">
     <div class="brand">Frontier Investment</div>
     <div class="ticker">SOXL</div>
     <div class="subtitle">반도체 3배 레버리지 ETF · 매수 계산기</div>
   </div>
 
-  <div id="errorMsg" class="error-msg"></div>
+  <!-- MESSAGES -->
+  <div id="msgBox" class="msg"></div>
 
-  <!-- API Key Card -->
-  <div class="apikey-card" id="apikeyCard">
+  <!-- API KEY CARD -->
+  <div class="card gold" id="apikeyCard">
     <div class="apikey-header">
-      <span class="apikey-icon">🔑</span>
+      <span style="font-size:16px;">🔑</span>
       <div>
-        <div class="apikey-title">Finnhub API Key 설정</div>
-        <div class="apikey-desc">무료 발급: <a href="https://finnhub.io" target="_blank" style="color:var(--accent);">finnhub.io</a> → Sign Up</div>
+        <div class="apikey-title">Finnhub API Key</div>
+        <div class="apikey-desc">무료 발급: <a href="https://finnhub.io" target="_blank">finnhub.io</a> → Sign Up</div>
       </div>
-      <button class="apikey-toggle" id="apikeyToggle" onclick="toggleApiKey()">설정</button>
+      <button class="toggle-btn" id="apikeyToggleBtn" onclick="toggleApiKeyPanel()">설정</button>
     </div>
-    <div id="apikeyBody" style="display:none; margin-top:10px;">
-      <div class="manual-input-wrap">
-        <input type="text" class="manual-price-input" id="apikeyInput"
-          placeholder="your_api_key_here" autocomplete="off"
-          style="font-size:13px; letter-spacing:1px;">
+    <div class="apikey-body" id="apikeyBody">
+      <div class="manual-row" style="margin-bottom:8px;">
+        <input type="text" class="manual-inp" id="apikeyInput" placeholder="your_api_key_here"
+          autocomplete="off" style="font-size:13px;letter-spacing:1px;">
         <button class="apply-btn" onclick="saveApiKey()">저장</button>
       </div>
-      <div style="margin-top:8px; font-size:10px; color:var(--text-dim); line-height:1.6;">
-        ① finnhub.io 무료 가입 → ② Dashboard에서 API Key 복사 → ③ 위에 붙여넣기 후 저장
+      <div style="font-size:10px;color:var(--dim);line-height:1.7;">
+        ① finnhub.io 무료 가입 &nbsp;→&nbsp; ② Dashboard에서 API Key 복사 &nbsp;→&nbsp; ③ 위에 붙여넣기 후 저장
       </div>
     </div>
-    <div id="apikeyStatus" style="margin-top:6px; font-size:10px; font-family:var(--mono); color:var(--text-dim);"></div>
+    <div class="apikey-status" id="apikeyStatus"></div>
   </div>
 
-  <!-- High Price Card -->
-  <div class="price-card">
-    <div class="card-label">📈 어제 정규장~현재 최고가 (E4)</div>
-    <div class="high-price-row">
-      <div class="high-price" id="highPriceDisplay">---.--</div>
+  <!-- HIGH PRICE CARD -->
+  <div class="card">
+    <div class="card-label">📈 어제 정규장 ~ 현재 최고가 (E4)</div>
+
+    <div class="price-row">
+      <div class="price-big" id="highPriceDisplay">---.--</div>
       <div class="price-unit">USD</div>
+      <div id="modeBadge" style="margin-left:8px;"></div>
     </div>
-    <button class="update-btn" onclick="fetchHighPrice()">
+
+    <div class="price-meta">
+      <div>
+        <div class="cur-label">현재가</div>
+        <div class="cur-price" id="curPriceDisplay">---</div>
+      </div>
+      <div style="margin-left:auto;text-align:right;">
+        <div class="cur-label" id="nextUpdateLabel"></div>
+        <div class="cur-label" id="lastUpdateLabel" style="margin-top:2px;"></div>
+      </div>
+    </div>
+
+    <button class="fetch-btn" onclick="manualFetch()">
       <span class="dot"></span>
-      실시간 최고가 불러오기
+      지금 즉시 업데이트
     </button>
+
     <div class="divider">
       <div class="divider-line"></div>
-      <div class="divider-text">또는 직접 입력</div>
+      <div class="divider-text">최고가 직접 입력 (자동보다 우선 적용)</div>
       <div class="divider-line"></div>
     </div>
-    <div class="manual-input-wrap">
-      <div class="manual-label">$</div>
-      <input type="number" class="manual-price-input" id="manualPrice" placeholder="73.43" step="0.01" inputmode="decimal">
-      <button class="apply-btn" onclick="applyManualPrice()">적용</button>
+
+    <div class="manual-row">
+      <div class="manual-sign">$</div>
+      <input type="number" class="manual-inp" id="manualPrice"
+        placeholder="직접 입력 시 자동 무시됨" step="0.01" inputmode="decimal"
+        oninput="onManualInput()">
+      <button class="apply-btn" onclick="applyManual()">적용</button>
+      <button class="clear-btn" onclick="clearManual()">초기화</button>
+    </div>
+    <div class="override-notice" id="overrideNotice">
+      ✏️ 직접 입력 가격이 적용 중입니다. 자동 업데이트 가격은 무시됩니다. 초기화 버튼으로 되돌릴 수 있습니다.
     </div>
   </div>
 
-  <div class="timestamp" id="timestamp">마지막 업데이트: --</div>
-
-  <!-- PRICE CHART -->
-  <div class="chart-card">
-    <div class="chart-title">📊 가격 차트 &amp; 매수 구간</div>
-    <div id="chartPlaceholder" class="chart-placeholder">최고가를 불러오면 차트가 표시됩니다</div>
+  <!-- CHART CARD -->
+  <div class="card orange">
+    <div class="chart-title">📊 가격 차트 &amp; 매수 구간 (ET 기준)</div>
+    <div id="chartPlaceholder" class="chart-placeholder">API Key를 설정하면 차트가 자동으로 표시됩니다</div>
     <canvas id="priceChart"></canvas>
     <div class="chart-legend" id="chartLegend">
-      <div class="legend-item">
-        <div class="legend-line" style="background:#00d4ff;"></div>가격
-      </div>
-      <div class="legend-item">
-        <div class="legend-line" style="background:#ffd700;border-top:2px dashed #ffd700;height:0;"></div>최고가
-      </div>
-      <div class="legend-item">
-        <div class="legend-line" style="background:#00ff88;"></div>1~3차
-      </div>
-      <div class="legend-item">
-        <div class="legend-line" style="background:#ff6b35;"></div>4~10차
-      </div>
-      <div class="legend-item">
-        <div class="legend-line" style="background:#ff4466;"></div>11~20차
-      </div>
+      <div class="legend-item"><div class="legend-line" style="background:#00d4ff;"></div>현재가</div>
+      <div class="legend-item"><div class="legend-line" style="background:#ffd700;"></div>최고가</div>
+      <div class="legend-item"><div class="legend-line" style="background:#00ff88;"></div>1~3차</div>
+      <div class="legend-item"><div class="legend-line" style="background:#ff6b35;"></div>4~10차</div>
+      <div class="legend-item"><div class="legend-line" style="background:#ff4466;"></div>11~20차</div>
     </div>
   </div>
 
-  <!-- Asset Input -->
-  <div class="input-group">
+  <!-- ASSET INPUT -->
+  <div class="card">
     <div class="input-label">
       💰 총 자산 (G25) <span id="perTradeDisplay">1/20 = $---</span>
     </div>
-    <div class="asset-input-wrap">
-      <div class="dollar-sign">$</div>
-      <input type="number" class="asset-input" id="assetInput" placeholder="268000" inputmode="decimal" oninput="updateCalc()">
+    <div class="asset-wrap">
+      <div class="dollar">$</div>
+      <input type="number" class="asset-inp" id="assetInput"
+        placeholder="268000" inputmode="decimal" oninput="updateCalc()">
     </div>
     <div class="per-trade">
       <div class="per-trade-label">매 구매당 금액 (총자산 ÷ 20)</div>
-      <div class="per-trade-value" id="perTradeLarge">$0.00</div>
+      <div class="per-trade-val" id="perTradeLarge">$0.00</div>
     </div>
   </div>
 
-  <div class="status-bar">
-    <div class="status-chip">
-      <div class="status-chip-label">매수 단계</div>
-      <div class="status-chip-value">20회</div>
+  <!-- CHIPS -->
+  <div class="chips">
+    <div class="chip">
+      <div class="chip-label">매수 단계</div>
+      <div class="chip-val">20회</div>
     </div>
-    <div class="status-chip">
-      <div class="status-chip-label">하락 구간</div>
-      <div class="status-chip-value orange">5%~43%</div>
+    <div class="chip">
+      <div class="chip-label">하락 구간</div>
+      <div class="chip-val orange">5%~43%</div>
     </div>
-    <div class="status-chip">
-      <div class="status-chip-label">총 예상 수량</div>
-      <div class="status-chip-value green" id="totalQty">0주</div>
+    <div class="chip">
+      <div class="chip-label">총 예상 수량</div>
+      <div class="chip-val green" id="totalQty">0주</div>
     </div>
   </div>
 
+  <!-- TABLE -->
   <div class="section-title">매수 스케줄</div>
-  <div class="table-section">
-    <div class="table-header">
+  <div class="table-wrap">
+    <div class="table-head">
       <div class="th">차수</div>
-      <div class="th" style="text-align:left">매수가격</div>
+      <div class="th" style="text-align:left;">매수가격</div>
       <div class="th">수량</div>
       <div class="th">금액</div>
     </div>
@@ -583,144 +286,212 @@
 </div>
 
 <script>
-let highPrice = null;
-let lastPriceData = null;
-let lastLabels = null;
-
-const DROP_LEVELS = Array.from({length: 20}, (_, i) => -(0.05 + i * 0.02));
+// ── STATE ─────────────────────────────────────────────────────────────────────
+const DROP = Array.from({length:20}, (_,i) => -(0.05 + i*0.02));
 const STORAGE_KEY = 'finnhub_api_key';
+const AUTO_INTERVAL_MS = 60000; // 1분
 
-// ── API KEY ──────────────────────────────────────────────────────────────────
-function getApiKey() {
-  try { return localStorage.getItem(STORAGE_KEY) || ''; } catch(e) { return ''; }
+let autoHighPrice  = null;   // 자동 조회 최고가
+let manualHighPrice = null;  // 직접 입력 최고가 (우선)
+let currentPrice   = null;   // 현재가 (차트용)
+let priceHistory   = [];     // [{t, c, h}]
+let autoTimer      = null;
+let countdownTimer = null;
+let nextUpdateAt   = null;
+let isLoading      = false;
+
+// 실제 사용할 최고가 = 직접입력 우선
+function effectiveHigh() { return manualHighPrice || autoHighPrice; }
+
+// ── FORMAT ────────────────────────────────────────────────────────────────────
+function fmt(n, d=2) {
+  if (!isFinite(n)||isNaN(n)) return '--';
+  return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
 }
-function saveApiKey() {
-  const key = document.getElementById('apikeyInput').value.trim();
-  if (!key) { showError('API Key를 입력해주세요.'); return; }
-  try { localStorage.setItem(STORAGE_KEY, key); } catch(e) {}
-  updateApiKeyStatus(key);
-  document.getElementById('apikeyBody').style.display = 'none';
-  hideError();
-  showInfo('✅ API Key가 저장되었습니다.');
+function getETOffset() {
+  const now=new Date(), jan=new Date(now.getFullYear(),0,1).getTimezoneOffset(), jul=new Date(now.getFullYear(),6,1).getTimezoneOffset();
+  return now.getTimezoneOffset()<Math.max(jan,jul)?-4:-5;
 }
-function toggleApiKey() {
-  const body = document.getElementById('apikeyBody');
-  const isHidden = body.style.display === 'none';
-  body.style.display = isHidden ? 'block' : 'none';
-  if (isHidden) {
-    const k = getApiKey();
-    if (k) document.getElementById('apikeyInput').value = k;
+function toETLabel(unix) {
+  const off=getETOffset(), d=new Date(unix*1000);
+  const h=((d.getUTCHours()+off+24)%24).toString().padStart(2,'0');
+  const m=d.getUTCMinutes().toString().padStart(2,'0');
+  return h+':'+m;
+}
+function getYestOpenTS() {
+  const off=getETOffset(), now=new Date();
+  const etNow=new Date(now.getTime()+(off*3600+now.getTimezoneOffset()*60)*1000);
+  const y=new Date(etNow); y.setDate(y.getDate()-1); y.setHours(9,30,0,0);
+  return (y.getTime()-(off*3600+now.getTimezoneOffset()*60)*1000)/1000;
+}
+
+// ── API KEY ───────────────────────────────────────────────────────────────────
+function getApiKey() { try{return localStorage.getItem(STORAGE_KEY)||'';}catch(e){return '';} }
+
+function toggleApiKeyPanel() {
+  const body=document.getElementById('apikeyBody');
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  if (!isOpen) {
+    const k=getApiKey(); if(k) document.getElementById('apikeyInput').value=k;
     document.getElementById('apikeyInput').focus();
   }
 }
-function updateApiKeyStatus(key) {
-  const card = document.getElementById('apikeyCard');
-  const status = document.getElementById('apikeyStatus');
+
+function saveApiKey() {
+  const key=document.getElementById('apikeyInput').value.trim();
+  if (!key) { showMsg('API Key를 입력해주세요.','error'); return; }
+  try{localStorage.setItem(STORAGE_KEY,key);}catch(e){}
+  renderApiKeyStatus(key);
+  document.getElementById('apikeyBody').classList.remove('open');
+  showMsg('✅ API Key가 저장되었습니다. 가격을 자동으로 불러옵니다.','info');
+  startAutoFetch();
+}
+
+function renderApiKeyStatus(key) {
+  const card=document.getElementById('apikeyCard');
+  const status=document.getElementById('apikeyStatus');
+  const btn=document.getElementById('apikeyToggleBtn');
   if (key) {
-    const masked = key.substring(0,4) + '****' + key.slice(-4);
-    status.textContent = '✓ 저장됨: ' + masked;
-    status.style.color = 'var(--accent3)';
-    card.classList.add('apikey-saved');
-    document.getElementById('apikeyToggle').textContent = '변경';
+    const masked=key.substring(0,4)+'****'+key.slice(-4);
+    status.textContent='✓ 저장됨: '+masked;
+    status.style.color='var(--accent3)';
+    btn.textContent='변경'; btn.classList.add('saved');
+    card.style.borderColor='rgba(0,255,136,0.25)';
   } else {
-    status.textContent = '⚠ API Key 미설정 — 수동 입력만 가능';
-    status.style.color = 'var(--gold)';
-    card.classList.remove('apikey-saved');
-    document.getElementById('apikeyToggle').textContent = '설정';
+    status.textContent='⚠ API Key 미설정 — 수동 입력만 가능';
+    status.style.color='var(--gold)';
+    btn.textContent='설정'; btn.classList.remove('saved');
+    card.style.borderColor='rgba(255,215,0,0.25)';
   }
 }
 
-// ── HELPERS ──────────────────────────────────────────────────────────────────
-function formatNum(n, dec=2) {
-  if (!isFinite(n) || isNaN(n)) return '--';
-  return n.toLocaleString('en-US', {minimumFractionDigits: dec, maximumFractionDigits: dec});
-}
-function getETOffset() {
-  const now = new Date();
-  const jan = new Date(now.getFullYear(), 0, 1).getTimezoneOffset();
-  const jul = new Date(now.getFullYear(), 6, 1).getTimezoneOffset();
-  return now.getTimezoneOffset() < Math.max(jan, jul) ? -4 : -5;
-}
-function toETLabel(unixSec) {
-  const etOff = getETOffset();
-  const d = new Date(unixSec * 1000);
-  const etH = ((d.getUTCHours() + etOff + 24) % 24).toString().padStart(2,'0');
-  const etM = d.getUTCMinutes().toString().padStart(2,'0');
-  return `${etH}:${etM}`;
-}
-function getYesterdayOpenTS() {
-  const etOff = getETOffset();
-  const now = new Date();
-  const etNow = new Date(now.getTime() + (etOff * 3600 + now.getTimezoneOffset() * 60) * 1000);
-  const yest = new Date(etNow);
-  yest.setDate(yest.getDate() - 1);
-  yest.setHours(9, 30, 0, 0);
-  return (yest.getTime() - (etOff * 3600 + now.getTimezoneOffset() * 60) * 1000) / 1000;
+// ── MANUAL PRICE OVERRIDE ─────────────────────────────────────────────────────
+function onManualInput() {
+  // 입력 중에는 아직 적용 안 함 (적용 버튼 눌러야)
+  const inp=document.getElementById('manualPrice');
+  inp.classList.toggle('override', inp.value.trim()!=='');
 }
 
-// ── CALC & TABLE ─────────────────────────────────────────────────────────────
+function applyManual() {
+  const val=parseFloat(document.getElementById('manualPrice').value);
+  if (!val||val<=0) { showMsg('올바른 가격을 입력해주세요.','error'); return; }
+  manualHighPrice=val;
+  document.getElementById('overrideNotice').classList.add('show');
+  document.getElementById('manualPrice').classList.add('override');
+  renderHighPrice();
+  renderTable();
+  // 차트는 현재 히스토리 데이터 기반으로 매수선만 업데이트
+  if (priceHistory.length>0) drawChart(); else drawChartStatic(val);
+  showMsg('✏️ 직접 입력 가격($'+fmt(val)+')이 적용되었습니다. 자동 최고가보다 우선합니다.','info');
+}
+
+function clearManual() {
+  manualHighPrice=null;
+  document.getElementById('manualPrice').value='';
+  document.getElementById('manualPrice').classList.remove('override');
+  document.getElementById('overrideNotice').classList.remove('show');
+  renderHighPrice();
+  renderTable();
+  if (priceHistory.length>0) drawChart(); else if(autoHighPrice) drawChartStatic(autoHighPrice);
+  showMsg('🔄 직접 입력이 초기화되었습니다. 자동 최고가가 적용됩니다.','info');
+}
+
+// ── RENDER HIGH PRICE ─────────────────────────────────────────────────────────
+function renderHighPrice() {
+  const high=effectiveHigh();
+  document.getElementById('highPriceDisplay').textContent = high ? '$'+fmt(high) : '---.--';
+  document.getElementById('curPriceDisplay').textContent  = currentPrice ? '$'+fmt(currentPrice) : '---';
+
+  // 모드 뱃지
+  const badge=document.getElementById('modeBadge');
+  if (manualHighPrice) {
+    badge.innerHTML='<div class="manual-badge"><span>✏️ 수동</span></div>';
+  } else if (autoHighPrice) {
+    badge.innerHTML='<div class="auto-badge"><span class="dot"></span><span>자동</span></div>';
+  } else {
+    badge.innerHTML='';
+  }
+}
+
+// ── RENDER TABLE ──────────────────────────────────────────────────────────────
 function updateCalc() {
-  const asset = parseFloat(document.getElementById('assetInput').value) || 0;
-  const perTrade = asset / 20;
-  document.getElementById('perTradeLarge').textContent = '$' + formatNum(perTrade);
-  document.getElementById('perTradeDisplay').textContent = '1/20 = $' + formatNum(perTrade);
-  renderTable(perTrade);
+  const asset=parseFloat(document.getElementById('assetInput').value)||0;
+  const per=asset/20;
+  document.getElementById('perTradeLarge').textContent='$'+fmt(per);
+  document.getElementById('perTradeDisplay').textContent='1/20 = $'+fmt(per);
+  renderTable();
 }
 
-function renderTable(perTrade) {
-  const body = document.getElementById('tableBody');
-  if (!highPrice) {
-    body.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-dim);font-size:13px;">최고가를 먼저 불러오거나 입력해주세요</div>';
-    document.getElementById('totalQty').textContent = '0주';
+function renderTable() {
+  const body=document.getElementById('tableBody');
+  const high=effectiveHigh();
+  if (!high) {
+    body.innerHTML='<div style="padding:22px;text-align:center;color:var(--dim);font-size:13px;">최고가를 불러오거나 직접 입력해주세요</div>';
+    document.getElementById('totalQty').textContent='0주';
     return;
   }
-  let totalQty = 0, html = '';
-  DROP_LEVELS.forEach((drop, i) => {
-    const buyPrice = highPrice * (1 + drop);
-    const qty = perTrade > 0 ? Math.floor(perTrade / buyPrice) : 0;
-    const amount = qty * buyPrice;
-    totalQty += qty;
-    const dropPct = Math.abs(drop * 100).toFixed(0);
-    let badgeBg, badgeColor;
-    if (i < 3)       { badgeBg='rgba(0,255,136,0.12)';  badgeColor='#00ff88'; }
-    else if (i < 10) { badgeBg='rgba(255,107,53,0.12)'; badgeColor='#ff6b35'; }
-    else             { badgeBg='rgba(255,68,102,0.12)';  badgeColor='#ff4466'; }
-    html += '<div class="table-row">'
-      + '<div class="row-num">' + (i+1) + '차</div>'
-      + '<div><div class="buy-price">$' + formatNum(buyPrice) + '</div>'
-      + '<span class="drop-badge" style="background:' + badgeBg + ';color:' + badgeColor + '">▼' + dropPct + '%</span></div>'
-      + '<div class="cell-right"><div class="qty-value">' + qty.toLocaleString() + '<span style="font-size:9px;color:var(--text-dim)"> 주</span></div></div>'
-      + '<div class="cell-right"><div class="amount-value">$' + formatNum(amount) + '</div></div>'
-      + '</div>';
+  const asset=parseFloat(document.getElementById('assetInput').value)||0;
+  const per=asset/20;
+  let totalQty=0, html='';
+  DROP.forEach((drop,i)=>{
+    const bp=high*(1+drop);
+    const qty=per>0?Math.floor(per/bp):0;
+    const amt=qty*bp;
+    totalQty+=qty;
+    const pct=Math.abs(drop*100).toFixed(0);
+    let bg,col;
+    if(i<3){bg='rgba(0,255,136,0.1)';col='#00ff88';}
+    else if(i<10){bg='rgba(255,107,53,0.1)';col='#ff6b35';}
+    else{bg='rgba(255,68,102,0.1)';col='#ff4466';}
+    html+='<div class="trow">'
+      +'<div class="rnum">'+(i+1)+'차</div>'
+      +'<div><div class="rprice">$'+fmt(bp)+'</div>'
+      +'<span class="rbadge" style="background:'+bg+';color:'+col+'">▼'+pct+'%</span></div>'
+      +'<div class="rt"><div class="rqty">'+qty.toLocaleString()+'<span style="font-size:9px;color:var(--dim)"> 주</span></div></div>'
+      +'<div class="rt"><div class="ramt">$'+fmt(amt)+'</div></div>'
+      +'</div>';
   });
-  body.innerHTML = html;
-  document.getElementById('totalQty').textContent = totalQty.toLocaleString() + '주';
+  body.innerHTML=html;
+  document.getElementById('totalQty').textContent=totalQty.toLocaleString()+'주';
 }
 
 // ── CHART ─────────────────────────────────────────────────────────────────────
-function drawChart(priceData, labels, high) {
-  const placeholder = document.getElementById('chartPlaceholder');
-  const canvas      = document.getElementById('priceChart');
-  const legend      = document.getElementById('chartLegend');
-  placeholder.style.display = 'none';
-  canvas.style.display = 'block';
-  legend.style.display = 'flex';
+function drawChart() {
+  const high=effectiveHigh();
+  if (!high||priceHistory.length<2) return;
 
-  const dpr = window.devicePixelRatio || 1;
-  const W   = canvas.parentElement.clientWidth;
-  const H   = 230;
-  canvas.width  = W * dpr; canvas.height = H * dpr;
-  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
-  const ctx = canvas.getContext('2d');
-  ctx.scale(dpr, dpr);
+  const placeholder=document.getElementById('chartPlaceholder');
+  const canvas=document.getElementById('priceChart');
+  const legend=document.getElementById('chartLegend');
+  placeholder.style.display='none';
+  canvas.style.display='block';
+  legend.style.display='flex';
 
-  const padL=48, padR=36, padT=24, padB=22;
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.parentElement.clientWidth;
+  const H=230;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  canvas.style.width=W+'px'; canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+
+  const padL=50,padR=38,padT=24,padB=22;
   const cW=W-padL-padR, cH=H-padT-padB;
-  const minP = high*(1+DROP_LEVELS[19])*0.985;
-  const maxP = high*1.012;
-  const pRange = maxP-minP;
-  const px = i => padL + (priceData.length<2?cW/2:(i/(priceData.length-1))*cW);
-  const py = p => padT + cH - ((p-minP)/pRange)*cH;
+
+  const closes=priceHistory.map(p=>p.c);
+  const labels=priceHistory.map(p=>p.label);
+  const n=closes.length;
+
+  // Y range: from lowest buy level to a bit above high
+  const lowestLvl=high*(1+DROP[19]);
+  const dataMin=Math.min(...closes);
+  const minP=Math.min(lowestLvl*0.985, dataMin*0.998);
+  const maxP=high*1.012;
+  const pRange=maxP-minP;
+
+  const px=i=>padL+(n<2?cW/2:(i/(n-1))*cW);
+  const py=p=>padT+cH-((p-minP)/pRange)*cH;
 
   ctx.clearRect(0,0,W,H);
 
@@ -729,16 +500,17 @@ function drawChart(priceData, labels, high) {
   for(let g=0;g<=5;g++){const y=padT+(g/5)*cH; ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(padL+cW,y); ctx.stroke();}
 
   // Buy level lines
-  DROP_LEVELS.forEach((drop,i)=>{
-    const lvlP=high*(1+drop);
-    if(lvlP<minP||lvlP>maxP) return;
-    const y=py(lvlP), pct=Math.abs(drop*100).toFixed(0);
-    let color= i<3?'rgba(0,255,136,0.65)': i<10?'rgba(255,107,53,0.55)':'rgba(255,68,102,0.50)';
+  DROP.forEach((drop,i)=>{
+    const lvl=high*(1+drop);
+    if(lvl<minP||lvl>maxP) return;
+    const y=py(lvl), pct=Math.abs(drop*100).toFixed(0);
+    const color=i<3?'rgba(0,255,136,0.65)':i<10?'rgba(255,107,53,0.55)':'rgba(255,68,102,0.50)';
     ctx.save(); ctx.setLineDash([3,4]); ctx.strokeStyle=color; ctx.lineWidth=1;
     ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(padL+cW,y); ctx.stroke(); ctx.restore();
     if(i%2===0||i<3){
-      ctx.font="bold 8px 'Share Tech Mono',monospace"; ctx.fillStyle=color; ctx.textAlign='left';
-      ctx.fillText('▼'+pct+'%', padL+cW+2, y+3);
+      ctx.font="bold 8px 'Share Tech Mono',monospace";
+      ctx.fillStyle=color; ctx.textAlign='left';
+      ctx.fillText('▼'+pct+'%',padL+cW+2,y+3);
     }
   });
 
@@ -746,34 +518,43 @@ function drawChart(priceData, labels, high) {
   const highY=py(high);
   ctx.save(); ctx.setLineDash([6,3]); ctx.strokeStyle='rgba(255,215,0,0.9)'; ctx.lineWidth=1.5;
   ctx.beginPath(); ctx.moveTo(padL,highY); ctx.lineTo(padL+cW,highY); ctx.stroke(); ctx.restore();
-  ctx.fillStyle='rgba(10,14,26,0.75)'; ctx.fillRect(padL+2,highY-11,34,12);
+  ctx.fillStyle='rgba(10,14,26,0.8)'; ctx.fillRect(padL+2,highY-12,36,13);
   ctx.font="bold 8px 'Share Tech Mono',monospace"; ctx.fillStyle='#ffd700'; ctx.textAlign='left';
   ctx.fillText('HIGH',padL+4,highY-2);
 
-  // Price area + line
-  if(priceData.length>1){
+  // Manual override line if active
+  if (manualHighPrice && autoHighPrice && Math.abs(manualHighPrice-autoHighPrice)>0.01) {
+    const mY=py(manualHighPrice);
+    ctx.save(); ctx.setLineDash([4,4]); ctx.strokeStyle='rgba(255,215,0,0.4)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(padL,mY); ctx.lineTo(padL+cW,mY); ctx.stroke(); ctx.restore();
+  }
+
+  // Price area
+  if(n>1){
     const grad=ctx.createLinearGradient(0,padT,0,padT+cH);
-    grad.addColorStop(0,'rgba(0,212,255,0.22)'); grad.addColorStop(1,'rgba(0,212,255,0.02)');
-    ctx.beginPath(); ctx.moveTo(px(0),py(priceData[0]));
-    for(let i=1;i<priceData.length;i++) ctx.lineTo(px(i),py(priceData[i]));
-    ctx.lineTo(px(priceData.length-1),padT+cH); ctx.lineTo(px(0),padT+cH);
+    grad.addColorStop(0,'rgba(0,212,255,0.2)'); grad.addColorStop(1,'rgba(0,212,255,0.01)');
+    ctx.beginPath(); ctx.moveTo(px(0),py(closes[0]));
+    for(let i=1;i<n;i++) ctx.lineTo(px(i),py(closes[i]));
+    ctx.lineTo(px(n-1),padT+cH); ctx.lineTo(px(0),padT+cH);
     ctx.closePath(); ctx.fillStyle=grad; ctx.fill();
 
-    ctx.beginPath(); ctx.moveTo(px(0),py(priceData[0]));
-    for(let i=1;i<priceData.length;i++) ctx.lineTo(px(i),py(priceData[i]));
+    ctx.beginPath(); ctx.moveTo(px(0),py(closes[0]));
+    for(let i=1;i<n;i++) ctx.lineTo(px(i),py(closes[i]));
     ctx.strokeStyle='#00d4ff'; ctx.lineWidth=2; ctx.lineJoin='round'; ctx.setLineDash([]); ctx.stroke();
 
-    const lx=px(priceData.length-1), ly=py(priceData[priceData.length-1]);
-    ctx.beginPath(); ctx.arc(lx,ly,5,0,Math.PI*2); ctx.fillStyle='rgba(0,212,255,0.25)'; ctx.fill();
+    // Current dot
+    const lx=px(n-1), ly=py(closes[n-1]);
+    ctx.beginPath(); ctx.arc(lx,ly,5,0,Math.PI*2); ctx.fillStyle='rgba(0,212,255,0.2)'; ctx.fill();
     ctx.beginPath(); ctx.arc(lx,ly,3,0,Math.PI*2);
     ctx.fillStyle='#00d4ff'; ctx.strokeStyle='#0a0e1a'; ctx.lineWidth=1.5; ctx.setLineDash([]); ctx.fill(); ctx.stroke();
 
-    const curP=priceData[priceData.length-1], labelX=Math.min(lx,padL+cW-2);
+    // Price label
+    const curP=closes[n-1], labelX=Math.min(lx,padL+cW-2);
     ctx.font="bold 9px 'Share Tech Mono',monospace";
     const lw=ctx.measureText('$'+curP.toFixed(2)).width+6;
-    ctx.fillStyle='#0a0e1a'; ctx.fillRect(labelX-lw-1,ly-16,lw+2,13);
+    ctx.fillStyle='#0a0e1a'; ctx.fillRect(labelX-lw-1,ly-17,lw+2,13);
     ctx.fillStyle='#00d4ff'; ctx.textAlign='right';
-    ctx.fillText('$'+curP.toFixed(2),labelX-2,ly-6);
+    ctx.fillText('$'+curP.toFixed(2),labelX-2,ly-7);
   }
 
   // Y axis
@@ -785,7 +566,7 @@ function drawChart(priceData, labels, high) {
   }
 
   // X axis
-  if(labels&&labels.length>1){
+  if(labels.length>1){
     ctx.textAlign='center'; ctx.fillStyle='rgba(90,112,144,0.85)';
     ctx.font="8px 'Share Tech Mono',monospace";
     [0,Math.floor(labels.length/2),labels.length-1].forEach(idx=>{
@@ -794,118 +575,147 @@ function drawChart(priceData, labels, high) {
   }
 }
 
-function drawChartStatic(price){
+function drawChartStatic(price) {
   const n=80;
-  const data=Array.from({length:n},(_,i)=>price+Math.sin(i*0.3)*price*0.004+(i-n/2)*price*0.00008);
+  const data=Array.from({length:n},(_,i)=>price+Math.sin(i*0.3)*price*0.003+(i-n/2)*price*0.00006);
   data[data.length-1]=price;
-  const lbs=data.map((_,i)=>i===0?'PREV':i===n-1?'NOW':'');
-  drawChart(data,lbs,price);
+  priceHistory=data.map((c,i)=>({c,h:c,label:i===0?'PREV':i===n-1?'NOW':''}));
+  drawChart();
 }
 
-// ── SET HIGH PRICE ────────────────────────────────────────────────────────────
-function setHighPrice(price, priceData, labels){
-  highPrice=price; lastPriceData=priceData; lastLabels=labels;
-  document.getElementById('highPriceDisplay').textContent='$'+formatNum(price);
-  const now=new Date();
-  document.getElementById('timestamp').textContent=
-    '마지막 업데이트: '+now.toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
-  const asset=parseFloat(document.getElementById('assetInput').value)||0;
-  renderTable(asset/20);
-  if(priceData&&priceData.length>1) drawChart(priceData,labels,price);
-  else drawChartStatic(price);
-}
-
-function applyManualPrice(){
-  const val=parseFloat(document.getElementById('manualPrice').value);
-  if(!val||val<=0){showError('올바른 가격을 입력해주세요.'); return;}
-  hideError();
-  setHighPrice(val,null,null);
-}
-
-// ── FINNHUB FETCH ─────────────────────────────────────────────────────────────
-async function fetchHighPrice(){
+// ── FETCH ─────────────────────────────────────────────────────────────────────
+async function fetchData(showSpinner=false) {
   const apiKey=getApiKey();
-  if(!apiKey){
-    showError('⚠ Finnhub API Key가 필요합니다. 상단 🔑 설정을 눌러 입력해주세요. (finnhub.io 무료 가입)');
-    document.getElementById('apikeyBody').style.display='block';
-    document.getElementById('apikeyInput').focus();
-    return;
-  }
-  showLoading(); hideError();
-  try{
-    const symbol='SOXL';
-    const cutoff=getYesterdayOpenTS();
+  if (!apiKey) return;
+  if (isLoading) return;
+  isLoading=true;
+  if(showSpinner) document.getElementById('loadingOverlay').classList.add('show');
+
+  try {
+    const sym='SOXL';
+    const cutoff=getYestOpenTS();
     const nowTs=Math.floor(Date.now()/1000);
 
-    // ① 현재가 + 당일 고가
-    const quoteRes=await fetch(
-      'https://finnhub.io/api/v1/quote?symbol='+symbol+'&token='+apiKey,
-      {signal:AbortSignal.timeout(10000)}
-    );
-    if(!quoteRes.ok){
-      if(quoteRes.status===401) throw new Error('API Key가 올바르지 않습니다. 다시 확인해주세요.');
-      throw new Error('서버 오류 ('+quoteRes.status+')');
+    // Quote
+    const qRes=await fetch('https://finnhub.io/api/v1/quote?symbol='+sym+'&token='+apiKey,
+      {signal:AbortSignal.timeout(10000)});
+    if(!qRes.ok){
+      if(qRes.status===401) throw new Error('API Key가 올바르지 않습니다.');
+      throw new Error('서버 오류 ('+qRes.status+')');
     }
-    const quote=await quoteRes.json();
-    if(!quote||!quote.c) throw new Error('가격 데이터를 받지 못했습니다.');
+    const quote=await qRes.json();
+    if(!quote||!quote.c) throw new Error('가격 데이터 없음');
 
-    // ② 5분봉 캔들 (어제 9:30 ET ~ 현재)
-    const candleRes=await fetch(
-      'https://finnhub.io/api/v1/stock/candle?symbol='+symbol+'&resolution=5&from='+Math.floor(cutoff)+'&to='+nowTs+'&token='+apiKey,
-      {signal:AbortSignal.timeout(10000)}
-    );
-    const candle=candleRes.ok?await candleRes.json():null;
+    currentPrice=quote.c;
+
+    // Candle (5분봉)
+    const cRes=await fetch(
+      'https://finnhub.io/api/v1/stock/candle?symbol='+sym+'&resolution=5&from='+Math.floor(cutoff)+'&to='+nowTs+'&token='+apiKey,
+      {signal:AbortSignal.timeout(10000)});
+    const candle=cRes.ok?await cRes.json():null;
 
     let maxHigh=quote.h||quote.c;
-    const prices=[], lbls=[];
 
     if(candle&&candle.s==='ok'&&candle.c&&candle.c.length>0){
+      const newHistory=[];
       for(let i=0;i<candle.t.length;i++){
         if(candle.t[i]<cutoff) continue;
         if(candle.h[i]>maxHigh) maxHigh=candle.h[i];
-        prices.push(candle.c[i]);
-        lbls.push(toETLabel(candle.t[i]));
+        newHistory.push({t:candle.t[i], c:candle.c[i], h:candle.h[i], label:toETLabel(candle.t[i])});
       }
-      if(prices.length>0) prices[prices.length-1]=quote.c;
+      if(newHistory.length>0){
+        // 마지막 포인트를 현재가로
+        newHistory[newHistory.length-1].c=quote.c;
+        priceHistory=newHistory;
+      }
     }
 
-    if(!maxHigh) throw new Error('최고가를 찾을 수 없습니다.');
-    setHighPrice(maxHigh, prices.length>1?prices:null, lbls.length>1?lbls:null);
+    autoHighPrice=maxHigh;
 
-  }catch(err){
-    showError((err.name==='TimeoutError'?'⏱ 요청 시간 초과. 네트워크를 확인하고 다시 시도하세요.':'❌ '+err.message));
-  }finally{
-    hideLoading();
+    // 업데이트 시간
+    const now=new Date();
+    document.getElementById('lastUpdateLabel').textContent=
+      '업데이트: '+now.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+
+    renderHighPrice();
+    renderTable();
+    drawChart();
+
+  } catch(err) {
+    showMsg('❌ '+err.message,'error');
+  } finally {
+    isLoading=false;
+    if(showSpinner) document.getElementById('loadingOverlay').classList.remove('show');
   }
 }
 
-// ── UI HELPERS ────────────────────────────────────────────────────────────────
-function showLoading(){document.getElementById('loadingOverlay').classList.add('show');}
-function hideLoading(){document.getElementById('loadingOverlay').classList.remove('show');}
-function showError(m){
-  const e=document.getElementById('errorMsg');
-  e.style.background=''; e.style.borderColor=''; e.style.color='';
-  e.textContent=m; e.classList.add('show');
-}
-function hideError(){document.getElementById('errorMsg').classList.remove('show');}
-function showInfo(m){
-  const e=document.getElementById('errorMsg');
-  e.style.background='rgba(0,255,136,0.08)';
-  e.style.borderColor='rgba(0,255,136,0.3)';
-  e.style.color='var(--accent3)';
-  e.textContent=m; e.classList.add('show');
-  setTimeout(()=>{e.classList.remove('show'); e.style.cssText='';},3000);
+// ── AUTO REFRESH ──────────────────────────────────────────────────────────────
+function startAutoFetch() {
+  stopAutoFetch();
+  fetchData(true); // 즉시 첫 조회
+  scheduleNext();
 }
 
+function scheduleNext() {
+  nextUpdateAt=Date.now()+AUTO_INTERVAL_MS;
+  autoTimer=setTimeout(()=>{
+    fetchData(false);
+    scheduleNext();
+  }, AUTO_INTERVAL_MS);
+  startCountdown();
+}
+
+function stopAutoFetch() {
+  if(autoTimer){clearTimeout(autoTimer); autoTimer=null;}
+  if(countdownTimer){clearInterval(countdownTimer); countdownTimer=null;}
+}
+
+function startCountdown() {
+  if(countdownTimer) clearInterval(countdownTimer);
+  countdownTimer=setInterval(()=>{
+    const remaining=Math.max(0,Math.round((nextUpdateAt-Date.now())/1000));
+    const el=document.getElementById('nextUpdateLabel');
+    if(el) el.textContent=remaining>0?'다음 업데이트: '+remaining+'초 후':'업데이트 중...';
+  },1000);
+}
+
+function manualFetch() {
+  if(!getApiKey()){
+    showMsg('⚠ API Key가 필요합니다. 상단 🔑 설정을 눌러 입력해주세요.','error');
+    document.getElementById('apikeyBody').classList.add('open');
+    return;
+  }
+  // 타이머 리셋 후 즉시 조회
+  stopAutoFetch();
+  fetchData(true);
+  scheduleNext();
+}
+
+// ── MESSAGES ──────────────────────────────────────────────────────────────────
+let msgTimer=null;
+function showMsg(text,type='error') {
+  const el=document.getElementById('msgBox');
+  el.className='msg show '+type;
+  el.textContent=text;
+  if(msgTimer) clearTimeout(msgTimer);
+  msgTimer=setTimeout(()=>el.classList.remove('show'),4000);
+}
+
+// ── RESIZE ────────────────────────────────────────────────────────────────────
 window.addEventListener('resize',()=>{
-  if(!highPrice) return;
-  if(lastPriceData&&lastPriceData.length>1) drawChart(lastPriceData,lastLabels,highPrice);
-  else drawChartStatic(highPrice);
+  if(effectiveHigh()){
+    if(priceHistory.length>1) drawChart();
+    else if(effectiveHigh()) drawChartStatic(effectiveHigh());
+  }
 });
 
-// Init
-updateApiKeyStatus(getApiKey());
-renderTable(0);
+// ── INIT ──────────────────────────────────────────────────────────────────────
+(function init(){
+  const key=getApiKey();
+  renderApiKeyStatus(key);
+  renderTable();
+  if(key) startAutoFetch();
+})();
 </script>
 </body>
 </html>
