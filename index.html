@@ -8,11 +8,11 @@
 <title>Frontier Investment - SOXL</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+KR:wght@300;400;700&display=swap');
-:root {
-  --bg:#0a0e1a; --card:#141c35; --border:#1e2d55;
-  --accent:#00d4ff; --accent2:#ff6b35; --accent3:#00ff88;
-  --text:#c8d8f0; --dim:#5a7090; --danger:#ff4466; --gold:#ffd700;
-  --mono:'Share Tech Mono',monospace; --sans:'Noto Sans KR',sans-serif;
+:root{
+  --bg:#0a0e1a;--card:#141c35;--border:#1e2d55;
+  --accent:#00d4ff;--accent2:#ff6b35;--accent3:#00ff88;
+  --text:#c8d8f0;--dim:#5a7090;--danger:#ff4466;--gold:#ffd700;
+  --mono:'Share Tech Mono',monospace;--sans:'Noto Sans KR',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden;}
@@ -25,98 +25,97 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .ticker{font-family:var(--mono);font-size:32px;color:var(--accent);letter-spacing:8px;text-shadow:0 0 20px rgba(0,212,255,0.4);}
 .subtitle{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
 
-/* CARDS */
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;position:relative;overflow:hidden;}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
-.card.gold::before{background:linear-gradient(90deg,transparent,var(--gold),transparent);}
-.card.orange::before{background:linear-gradient(90deg,transparent,var(--accent2),transparent);}
+/* CARDS — overflow:visible 로 버튼이 잘리지 않게 */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;position:relative;overflow:visible;}
+.card-top-line{position:absolute;top:0;left:0;right:0;height:2px;border-radius:12px 12px 0 0;background:linear-gradient(90deg,transparent,var(--accent),transparent);pointer-events:none;}
+.card-top-line.gold{background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.card-top-line.orange{background:linear-gradient(90deg,transparent,var(--accent2),transparent);}
 .card-label{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
 
-/* API KEY CARD */
+/* API KEY */
 .apikey-header{display:flex;align-items:center;gap:10px;}
 .apikey-title{font-size:12px;color:var(--text);font-weight:700;}
 .apikey-desc{font-size:10px;color:var(--dim);margin-top:2px;}
-.apikey-desc a{color:var(--accent);}
-.toggle-btn{margin-left:auto;background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.35);border-radius:16px;color:var(--gold);font-family:var(--sans);font-size:11px;padding:4px 14px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background 0.2s;}
-.toggle-btn:active{background:rgba(255,215,0,0.25);}
-.toggle-btn.saved{background:rgba(0,255,136,0.1);border-color:rgba(0,255,136,0.3);color:var(--accent3);}
+.apikey-desc a{color:var(--accent);text-decoration:none;}
+.toggle-btn{margin-left:auto;background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.4);border-radius:16px;color:var(--gold);font-family:var(--sans);font-size:11px;padding:5px 16px;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.toggle-btn:active{opacity:0.7;}
+.toggle-btn.saved{background:rgba(0,255,136,0.12);border-color:rgba(0,255,136,0.4);color:var(--accent3);}
 .apikey-body{margin-top:12px;display:none;}
 .apikey-body.open{display:block;}
-.apikey-status{margin-top:6px;font-size:10px;font-family:var(--mono);color:var(--dim);}
+.apikey-status{margin-top:6px;font-size:10px;font-family:var(--mono);}
 
-/* HIGH PRICE */
-.price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:10px;}
+/* PRICE */
+.price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
 .price-big{font-family:var(--mono);font-size:30px;color:var(--accent);text-shadow:0 0 12px rgba(0,212,255,0.3);}
 .price-unit{font-size:13px;color:var(--dim);}
-.price-meta{display:flex;gap:10px;align-items:center;margin-bottom:10px;}
-.cur-price{font-family:var(--mono);font-size:14px;color:var(--accent3);}
-.cur-label{font-size:10px;color:var(--dim);}
-.auto-badge{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--accent3);background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);border-radius:20px;padding:3px 10px;}
-.auto-badge .dot{width:5px;height:5px;background:var(--accent3);border-radius:50%;animation:blink 1s infinite;}
-.manual-badge{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--gold);background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.25);border-radius:20px;padding:3px 10px;}
+.badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:10px;border-radius:20px;padding:3px 10px;}
+.badge.auto{color:var(--accent3);background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.25);}
+.badge.manual{color:var(--gold);background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.25);}
+.badge .dot{width:5px;height:5px;border-radius:50%;background:var(--accent3);animation:blink 1s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 
-.fetch-btn{display:flex;align-items:center;gap:6px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);border-radius:20px;color:var(--accent);font-family:var(--sans);font-size:12px;padding:6px 14px;cursor:pointer;width:100%;justify-content:center;letter-spacing:1px;margin-bottom:10px;}
+.price-meta{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px;}
+.cur-block .cur-label{font-size:10px;color:var(--dim);}
+.cur-block .cur-val{font-family:var(--mono);font-size:14px;color:var(--accent3);}
+.time-block{text-align:right;}
+.time-block div{font-size:10px;color:var(--dim);font-family:var(--mono);}
+
+.fetch-btn{display:flex;align-items:center;gap:6px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);border-radius:20px;color:var(--accent);font-family:var(--sans);font-size:12px;padding:7px 14px;cursor:pointer;width:100%;justify-content:center;letter-spacing:1px;margin-bottom:10px;}
 .fetch-btn:active{background:rgba(0,212,255,0.2);}
 .fetch-btn .dot{width:6px;height:6px;background:var(--accent3);border-radius:50%;animation:blink 1.5s infinite;}
 
 .divider{display:flex;align-items:center;gap:8px;margin:8px 0;}
 .divider-line{flex:1;height:1px;background:var(--border);}
-.divider-text{font-size:9px;color:var(--dim);letter-spacing:1px;}
+.divider-text{font-size:9px;color:var(--dim);letter-spacing:1px;white-space:nowrap;}
 
-/* MANUAL INPUT */
-.manual-row{display:flex;align-items:center;gap:8px;}
-.manual-sign{font-family:var(--mono);font-size:18px;color:var(--accent2);}
-.manual-inp{flex:1;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:18px;padding:7px 10px;outline:none;text-align:right;}
-.manual-inp:focus{border-color:var(--accent);}
-.manual-inp.override{border-color:var(--gold);color:var(--gold);}
-.apply-btn{background:rgba(0,212,255,0.15);border:1px solid rgba(0,212,255,0.4);border-radius:8px;color:var(--accent);font-family:var(--sans);font-size:12px;padding:7px 14px;cursor:pointer;white-space:nowrap;}
-.apply-btn:active{background:rgba(0,212,255,0.25);}
-.clear-btn{background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.3);border-radius:8px;color:var(--danger);font-family:var(--sans);font-size:12px;padding:7px 12px;cursor:pointer;white-space:nowrap;}
-.clear-btn:active{background:rgba(255,68,102,0.2);}
+/* INPUTS */
+.inp-row{display:flex;align-items:center;gap:8px;}
+.sign{font-family:var(--mono);font-size:18px;color:var(--accent2);}
+.inp{flex:1;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:17px;padding:7px 10px;outline:none;text-align:right;min-width:0;}
+.inp:focus{border-color:var(--accent);}
+.inp.override{border-color:var(--gold)!important;color:var(--gold)!important;}
+.btn-apply{background:rgba(0,212,255,0.15);border:1px solid rgba(0,212,255,0.4);border-radius:8px;color:var(--accent);font-family:var(--sans);font-size:12px;padding:7px 14px;cursor:pointer;white-space:nowrap;}
+.btn-apply:active{opacity:0.7;}
+.btn-clear{background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.35);border-radius:8px;color:var(--danger);font-family:var(--sans);font-size:12px;padding:7px 12px;cursor:pointer;white-space:nowrap;}
+.btn-clear:active{opacity:0.7;}
 .override-notice{margin-top:8px;font-size:11px;color:var(--gold);background:rgba(255,215,0,0.07);border:1px solid rgba(255,215,0,0.2);border-radius:6px;padding:6px 10px;display:none;}
 .override-notice.show{display:block;}
 
-/* TIMESTAMP */
-.timestamp{text-align:center;font-family:var(--mono);font-size:10px;color:var(--dim);padding:4px;letter-spacing:1px;margin-bottom:8px;}
-.next-update{font-size:9px;color:rgba(90,112,144,0.6);}
-
 /* CHART */
 .chart-title{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
-.chart-placeholder{height:200px;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:12px;letter-spacing:1px;background:rgba(0,0,0,0.15);border-radius:8px;border:1px dashed var(--border);}
+.chart-ph{height:190px;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:12px;background:rgba(0,0,0,0.15);border-radius:8px;border:1px dashed var(--border);text-align:center;padding:12px;}
 #priceChart{display:none;width:100%;border-radius:6px;}
 .chart-legend{display:none;flex-wrap:wrap;gap:10px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
-.legend-item{display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9px;color:var(--dim);}
-.legend-line{width:14px;height:2px;border-radius:1px;}
+.leg{display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9px;color:var(--dim);}
+.leg-line{width:14px;height:2px;border-radius:1px;}
 
-/* ASSET INPUT */
+/* ASSET */
 .input-label{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
 .input-label span{color:var(--accent3);font-family:var(--mono);}
 .asset-wrap{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:8px;padding:0 12px;}
-.dollar{font-family:var(--mono);font-size:20px;color:var(--accent2);}
+.dollar-sign{font-family:var(--mono);font-size:20px;color:var(--accent2);}
 .asset-inp{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:22px;padding:10px 0;width:100%;}
 .asset-inp::placeholder{color:var(--dim);}
 .per-trade{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);border-radius:8px;padding:7px 12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;}
-.per-trade-label{font-size:11px;color:var(--dim);}
-.per-trade-val{font-family:var(--mono);font-size:15px;color:var(--accent3);}
+.per-label{font-size:11px;color:var(--dim);}
+.per-val{font-family:var(--mono);font-size:15px;color:var(--accent3);}
 
-/* STATUS CHIPS */
+/* CHIPS */
 .chips{display:flex;gap:8px;margin-bottom:10px;}
 .chip{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px 8px;text-align:center;}
 .chip-label{font-size:9px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
 .chip-val{font-family:var(--mono);font-size:13px;color:var(--text);}
-.chip-val.green{color:var(--accent3);}
-.chip-val.orange{color:var(--accent2);}
+.chip-val.g{color:var(--accent3);}
+.chip-val.o{color:var(--accent2);}
 
 /* TABLE */
-.section-title{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;padding-left:4px;}
-.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;}
-.table-head{display:grid;grid-template-columns:40px 1fr 80px 72px;padding:9px 12px;background:rgba(0,212,255,0.05);border-bottom:1px solid var(--border);}
+.sec-title{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;padding-left:4px;}
+.tbl-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;}
+.tbl-head{display:grid;grid-template-columns:40px 1fr 80px 72px;padding:9px 12px;background:rgba(0,212,255,0.05);border-bottom:1px solid var(--border);}
 .th{font-size:9px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;text-align:right;}
 .th:first-child{text-align:left;}
 .trow{display:grid;grid-template-columns:40px 1fr 80px 72px;padding:10px 12px;border-bottom:1px solid rgba(30,45,85,0.5);align-items:center;}
 .trow:last-child{border-bottom:none;}
-.trow:active{background:rgba(0,212,255,0.04);}
 .rnum{font-family:var(--mono);font-size:11px;color:var(--dim);}
 .rprice{font-family:var(--mono);font-size:14px;color:var(--text);}
 .rbadge{font-family:var(--mono);font-size:10px;padding:2px 5px;border-radius:4px;margin-top:2px;display:inline-block;}
@@ -124,25 +123,25 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .ramt{font-family:var(--mono);font-size:11px;color:var(--dim);text-align:right;margin-top:1px;}
 .rt{text-align:right;}
 
-/* ERROR / INFO */
-.msg{border-radius:8px;padding:9px 14px;font-size:12px;margin-bottom:10px;display:none;}
+/* MSG */
+.msg{border-radius:8px;padding:9px 14px;font-size:12px;margin-bottom:10px;display:none;line-height:1.5;}
 .msg.show{display:block;}
 .msg.error{background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.3);color:var(--danger);}
 .msg.info{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.3);color:var(--accent3);}
 
 /* LOADING */
-.loading-overlay{display:none;position:fixed;inset:0;background:rgba(10,14,26,0.82);z-index:100;justify-content:center;align-items:center;flex-direction:column;gap:14px;}
-.loading-overlay.show{display:flex;}
+.ov{display:none;position:fixed;inset:0;background:rgba(10,14,26,0.82);z-index:100;justify-content:center;align-items:center;flex-direction:column;gap:14px;}
+.ov.show{display:flex;}
 .spinner{width:38px;height:38px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:2px;}
+.ov-text{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:2px;}
 </style>
 </head>
 <body>
 
-<div id="loadingOverlay" class="loading-overlay">
+<div id="ov" class="ov">
   <div class="spinner"></div>
-  <div class="loading-text">가격 조회 중...</div>
+  <div class="ov-text">가격 조회 중...</div>
 </div>
 
 <div class="wrap">
@@ -154,27 +153,29 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="subtitle">반도체 3배 레버리지 ETF · 매수 계산기</div>
   </div>
 
-  <!-- MESSAGES -->
+  <!-- MSG -->
   <div id="msgBox" class="msg"></div>
 
   <!-- API KEY CARD -->
-  <div class="card gold" id="apikeyCard">
+  <div class="card" id="apikeyCard">
+    <div class="card-top-line gold"></div>
     <div class="apikey-header">
-      <span style="font-size:16px;">🔑</span>
-      <div>
+      <span style="font-size:16px;flex-shrink:0;">🔑</span>
+      <div style="min-width:0;">
         <div class="apikey-title">Finnhub API Key</div>
         <div class="apikey-desc">무료 발급: <a href="https://finnhub.io" target="_blank">finnhub.io</a> → Sign Up</div>
       </div>
       <button class="toggle-btn" id="apikeyToggleBtn" onclick="toggleApiKeyPanel()">설정</button>
     </div>
     <div class="apikey-body" id="apikeyBody">
-      <div class="manual-row" style="margin-bottom:8px;">
-        <input type="text" class="manual-inp" id="apikeyInput" placeholder="your_api_key_here"
-          autocomplete="off" style="font-size:13px;letter-spacing:1px;">
-        <button class="apply-btn" onclick="saveApiKey()">저장</button>
+      <div class="inp-row" style="margin-bottom:8px;">
+        <input type="text" class="inp" id="apikeyInput"
+          placeholder="여기에 API Key 붙여넣기" autocomplete="off"
+          style="font-size:13px;letter-spacing:1px;text-align:left;">
+        <button class="btn-apply" onclick="saveApiKey()">저장</button>
       </div>
-      <div style="font-size:10px;color:var(--dim);line-height:1.7;">
-        ① finnhub.io 무료 가입 &nbsp;→&nbsp; ② Dashboard에서 API Key 복사 &nbsp;→&nbsp; ③ 위에 붙여넣기 후 저장
+      <div style="font-size:10px;color:var(--dim);line-height:1.8;">
+        ① finnhub.io 가입 → ② Dashboard에서 API Key 복사 → ③ 위에 붙여넣기 후 저장
       </div>
     </div>
     <div class="apikey-status" id="apikeyStatus"></div>
@@ -182,22 +183,23 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
   <!-- HIGH PRICE CARD -->
   <div class="card">
+    <div class="card-top-line"></div>
     <div class="card-label">📈 어제 정규장 ~ 현재 최고가 (E4)</div>
 
     <div class="price-row">
       <div class="price-big" id="highPriceDisplay">---.--</div>
       <div class="price-unit">USD</div>
-      <div id="modeBadge" style="margin-left:8px;"></div>
+      <div id="modeBadge"></div>
     </div>
 
     <div class="price-meta">
-      <div>
+      <div class="cur-block">
         <div class="cur-label">현재가</div>
-        <div class="cur-price" id="curPriceDisplay">---</div>
+        <div class="cur-val" id="curPriceDisplay">---</div>
       </div>
-      <div style="margin-left:auto;text-align:right;">
-        <div class="cur-label" id="nextUpdateLabel"></div>
-        <div class="cur-label" id="lastUpdateLabel" style="margin-top:2px;"></div>
+      <div class="time-block">
+        <div id="nextUpdateLabel"></div>
+        <div id="lastUpdateLabel"></div>
       </div>
     </div>
 
@@ -212,46 +214,48 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div class="divider-line"></div>
     </div>
 
-    <div class="manual-row">
-      <div class="manual-sign">$</div>
-      <input type="number" class="manual-inp" id="manualPrice"
+    <div class="inp-row">
+      <div class="sign">$</div>
+      <input type="number" class="inp" id="manualPrice"
         placeholder="직접 입력 시 자동 무시됨" step="0.01" inputmode="decimal"
         oninput="onManualInput()">
-      <button class="apply-btn" onclick="applyManual()">적용</button>
-      <button class="clear-btn" onclick="clearManual()">초기화</button>
+      <button class="btn-apply" onclick="applyManual()">적용</button>
+      <button class="btn-clear" onclick="clearManual()">초기화</button>
     </div>
     <div class="override-notice" id="overrideNotice">
-      ✏️ 직접 입력 가격이 적용 중입니다. 자동 업데이트 가격은 무시됩니다. 초기화 버튼으로 되돌릴 수 있습니다.
+      ✏️ 직접 입력 가격이 적용 중입니다. 자동 최고가는 무시됩니다.
     </div>
   </div>
 
   <!-- CHART CARD -->
-  <div class="card orange">
+  <div class="card">
+    <div class="card-top-line orange"></div>
     <div class="chart-title">📊 가격 차트 &amp; 매수 구간 (ET 기준)</div>
-    <div id="chartPlaceholder" class="chart-placeholder">API Key를 설정하면 차트가 자동으로 표시됩니다</div>
+    <div id="chartPh" class="chart-ph">API Key를 설정하면 차트가 자동으로 표시됩니다</div>
     <canvas id="priceChart"></canvas>
     <div class="chart-legend" id="chartLegend">
-      <div class="legend-item"><div class="legend-line" style="background:#00d4ff;"></div>현재가</div>
-      <div class="legend-item"><div class="legend-line" style="background:#ffd700;"></div>최고가</div>
-      <div class="legend-item"><div class="legend-line" style="background:#00ff88;"></div>1~3차</div>
-      <div class="legend-item"><div class="legend-line" style="background:#ff6b35;"></div>4~10차</div>
-      <div class="legend-item"><div class="legend-line" style="background:#ff4466;"></div>11~20차</div>
+      <div class="leg"><div class="leg-line" style="background:#00d4ff;"></div>현재가</div>
+      <div class="leg"><div class="leg-line" style="background:#ffd700;"></div>최고가</div>
+      <div class="leg"><div class="leg-line" style="background:#00ff88;"></div>1~3차</div>
+      <div class="leg"><div class="leg-line" style="background:#ff6b35;"></div>4~10차</div>
+      <div class="leg"><div class="leg-line" style="background:#ff4466;"></div>11~20차</div>
     </div>
   </div>
 
   <!-- ASSET INPUT -->
   <div class="card">
+    <div class="card-top-line"></div>
     <div class="input-label">
       💰 총 자산 (G25) <span id="perTradeDisplay">1/20 = $---</span>
     </div>
     <div class="asset-wrap">
-      <div class="dollar">$</div>
+      <div class="dollar-sign">$</div>
       <input type="number" class="asset-inp" id="assetInput"
         placeholder="268000" inputmode="decimal" oninput="updateCalc()">
     </div>
     <div class="per-trade">
-      <div class="per-trade-label">매 구매당 금액 (총자산 ÷ 20)</div>
-      <div class="per-trade-val" id="perTradeLarge">$0.00</div>
+      <div class="per-label">매 구매당 금액 (총자산 ÷ 20)</div>
+      <div class="per-val" id="perTradeLarge">$0.00</div>
     </div>
   </div>
 
@@ -263,18 +267,18 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
     <div class="chip">
       <div class="chip-label">하락 구간</div>
-      <div class="chip-val orange">5%~43%</div>
+      <div class="chip-val o">5%~43%</div>
     </div>
     <div class="chip">
       <div class="chip-label">총 예상 수량</div>
-      <div class="chip-val green" id="totalQty">0주</div>
+      <div class="chip-val g" id="totalQty">0주</div>
     </div>
   </div>
 
   <!-- TABLE -->
-  <div class="section-title">매수 스케줄</div>
-  <div class="table-wrap">
-    <div class="table-head">
+  <div class="sec-title">매수 스케줄</div>
+  <div class="tbl-wrap">
+    <div class="tbl-head">
       <div class="th">차수</div>
       <div class="th" style="text-align:left;">매수가격</div>
       <div class="th">수량</div>
@@ -283,139 +287,120 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div id="tableBody"></div>
   </div>
 
-</div>
+</div><!-- /wrap -->
 
 <script>
-// ── STATE ─────────────────────────────────────────────────────────────────────
+// ── 상수 ──────────────────────────────────────────────────────────────────────
 const DROP = Array.from({length:20}, (_,i) => -(0.05 + i*0.02));
 const STORAGE_KEY = 'finnhub_api_key';
-const AUTO_INTERVAL_MS = 60000; // 1분
+const REFRESH_MS  = 60000; // 1분
 
-let autoHighPrice  = null;   // 자동 조회 최고가
-let manualHighPrice = null;  // 직접 입력 최고가 (우선)
-let currentPrice   = null;   // 현재가 (차트용)
-let priceHistory   = [];     // [{t, c, h}]
-let autoTimer      = null;
-let countdownTimer = null;
-let nextUpdateAt   = null;
-let isLoading      = false;
+// ── 상태 ──────────────────────────────────────────────────────────────────────
+let autoHigh    = null;   // Finnhub에서 받은 최고가
+let manualHigh  = null;   // 직접 입력 최고가 (우선)
+let curPrice    = null;
+let priceHist   = [];     // [{c, label}]
+let autoTimer   = null;
+let cntTimer    = null;
+let nextAt      = null;
+let busy        = false;
 
-// 실제 사용할 최고가 = 직접입력 우선
-function effectiveHigh() { return manualHighPrice || autoHighPrice; }
+function effectiveHigh(){ return manualHigh || autoHigh; }
 
-// ── FORMAT ────────────────────────────────────────────────────────────────────
-function fmt(n, d=2) {
-  if (!isFinite(n)||isNaN(n)) return '--';
-  return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
-}
-function getETOffset() {
-  const now=new Date(), jan=new Date(now.getFullYear(),0,1).getTimezoneOffset(), jul=new Date(now.getFullYear(),6,1).getTimezoneOffset();
+// ── 포맷 ──────────────────────────────────────────────────────────────────────
+function fmt(n,d=2){ return isFinite(n)&&!isNaN(n)?n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}):'--'; }
+
+function getETOff(){
+  const now=new Date(),jan=new Date(now.getFullYear(),0,1).getTimezoneOffset(),jul=new Date(now.getFullYear(),6,1).getTimezoneOffset();
   return now.getTimezoneOffset()<Math.max(jan,jul)?-4:-5;
 }
-function toETLabel(unix) {
-  const off=getETOffset(), d=new Date(unix*1000);
-  const h=((d.getUTCHours()+off+24)%24).toString().padStart(2,'0');
-  const m=d.getUTCMinutes().toString().padStart(2,'0');
-  return h+':'+m;
+function toETLabel(unix){
+  const off=getETOff(),d=new Date(unix*1000);
+  return ((d.getUTCHours()+off+24)%24).toString().padStart(2,'0')+':'+d.getUTCMinutes().toString().padStart(2,'0');
 }
-function getYestOpenTS() {
-  const off=getETOffset(), now=new Date();
+function getYestOpenTS(){
+  const off=getETOff(),now=new Date();
   const etNow=new Date(now.getTime()+(off*3600+now.getTimezoneOffset()*60)*1000);
   const y=new Date(etNow); y.setDate(y.getDate()-1); y.setHours(9,30,0,0);
   return (y.getTime()-(off*3600+now.getTimezoneOffset()*60)*1000)/1000;
 }
 
 // ── API KEY ───────────────────────────────────────────────────────────────────
-function getApiKey() { try{return localStorage.getItem(STORAGE_KEY)||'';}catch(e){return '';} }
+function getApiKey(){ try{return localStorage.getItem(STORAGE_KEY)||'';}catch(e){return '';} }
 
-function toggleApiKeyPanel() {
-  const body=document.getElementById('apikeyBody');
-  const isOpen=body.classList.contains('open');
-  body.classList.toggle('open',!isOpen);
-  if (!isOpen) {
+function toggleApiKeyPanel(){
+  const b=document.getElementById('apikeyBody');
+  const opening=!b.classList.contains('open');
+  b.classList.toggle('open', opening);
+  if(opening){
     const k=getApiKey(); if(k) document.getElementById('apikeyInput').value=k;
-    document.getElementById('apikeyInput').focus();
+    setTimeout(()=>document.getElementById('apikeyInput').focus(),50);
   }
 }
 
-function saveApiKey() {
+function saveApiKey(){
   const key=document.getElementById('apikeyInput').value.trim();
-  if (!key) { showMsg('API Key를 입력해주세요.','error'); return; }
+  if(!key){ showMsg('API Key를 입력해주세요.','error'); return; }
   try{localStorage.setItem(STORAGE_KEY,key);}catch(e){}
-  renderApiKeyStatus(key);
+  renderKeyStatus(key);
   document.getElementById('apikeyBody').classList.remove('open');
-  showMsg('✅ API Key가 저장되었습니다. 가격을 자동으로 불러옵니다.','info');
-  startAutoFetch();
+  showMsg('✅ API Key 저장 완료! 가격을 자동으로 불러옵니다.','info');
+  startAuto();
 }
 
-function renderApiKeyStatus(key) {
+function renderKeyStatus(key){
   const card=document.getElementById('apikeyCard');
   const status=document.getElementById('apikeyStatus');
   const btn=document.getElementById('apikeyToggleBtn');
-  if (key) {
-    const masked=key.substring(0,4)+'****'+key.slice(-4);
-    status.textContent='✓ 저장됨: '+masked;
-    status.style.color='var(--accent3)';
+  if(key){
+    const m=key.substring(0,4)+'****'+key.slice(-4);
+    status.textContent='✓ 저장됨: '+m; status.style.color='var(--accent3)';
     btn.textContent='변경'; btn.classList.add('saved');
-    card.style.borderColor='rgba(0,255,136,0.25)';
+    card.style.borderColor='rgba(0,255,136,0.3)';
   } else {
-    status.textContent='⚠ API Key 미설정 — 수동 입력만 가능';
-    status.style.color='var(--gold)';
+    status.textContent='⚠ API Key 미설정'; status.style.color='var(--gold)';
     btn.textContent='설정'; btn.classList.remove('saved');
     card.style.borderColor='rgba(255,215,0,0.25)';
   }
 }
 
-// ── MANUAL PRICE OVERRIDE ─────────────────────────────────────────────────────
-function onManualInput() {
-  // 입력 중에는 아직 적용 안 함 (적용 버튼 눌러야)
-  const inp=document.getElementById('manualPrice');
-  inp.classList.toggle('override', inp.value.trim()!=='');
+// ── 직접 입력 ─────────────────────────────────────────────────────────────────
+function onManualInput(){
+  document.getElementById('manualPrice').classList.toggle('override',
+    document.getElementById('manualPrice').value.trim()!=='');
 }
-
-function applyManual() {
-  const val=parseFloat(document.getElementById('manualPrice').value);
-  if (!val||val<=0) { showMsg('올바른 가격을 입력해주세요.','error'); return; }
-  manualHighPrice=val;
+function applyManual(){
+  const v=parseFloat(document.getElementById('manualPrice').value);
+  if(!v||v<=0){ showMsg('올바른 가격을 입력해주세요.','error'); return; }
+  manualHigh=v;
   document.getElementById('overrideNotice').classList.add('show');
   document.getElementById('manualPrice').classList.add('override');
-  renderHighPrice();
-  renderTable();
-  // 차트는 현재 히스토리 데이터 기반으로 매수선만 업데이트
-  if (priceHistory.length>0) drawChart(); else drawChartStatic(val);
-  showMsg('✏️ 직접 입력 가격($'+fmt(val)+')이 적용되었습니다. 자동 최고가보다 우선합니다.','info');
+  renderHigh(); renderTable();
+  if(priceHist.length>1) drawChart(); else drawStatic(v);
+  showMsg('✏️ 직접 입력 $'+fmt(v)+' 적용됨. 자동 최고가보다 우선합니다.','info');
 }
-
-function clearManual() {
-  manualHighPrice=null;
+function clearManual(){
+  manualHigh=null;
   document.getElementById('manualPrice').value='';
   document.getElementById('manualPrice').classList.remove('override');
   document.getElementById('overrideNotice').classList.remove('show');
-  renderHighPrice();
-  renderTable();
-  if (priceHistory.length>0) drawChart(); else if(autoHighPrice) drawChartStatic(autoHighPrice);
-  showMsg('🔄 직접 입력이 초기화되었습니다. 자동 최고가가 적용됩니다.','info');
+  renderHigh(); renderTable();
+  if(priceHist.length>1) drawChart(); else if(autoHigh) drawStatic(autoHigh);
+  showMsg('🔄 자동 최고가로 복귀됩니다.','info');
 }
 
-// ── RENDER HIGH PRICE ─────────────────────────────────────────────────────────
-function renderHighPrice() {
-  const high=effectiveHigh();
-  document.getElementById('highPriceDisplay').textContent = high ? '$'+fmt(high) : '---.--';
-  document.getElementById('curPriceDisplay').textContent  = currentPrice ? '$'+fmt(currentPrice) : '---';
-
-  // 모드 뱃지
-  const badge=document.getElementById('modeBadge');
-  if (manualHighPrice) {
-    badge.innerHTML='<div class="manual-badge"><span>✏️ 수동</span></div>';
-  } else if (autoHighPrice) {
-    badge.innerHTML='<div class="auto-badge"><span class="dot"></span><span>자동</span></div>';
-  } else {
-    badge.innerHTML='';
-  }
+// ── 렌더 ──────────────────────────────────────────────────────────────────────
+function renderHigh(){
+  const h=effectiveHigh();
+  document.getElementById('highPriceDisplay').textContent = h?'$'+fmt(h):'---.--';
+  document.getElementById('curPriceDisplay').textContent  = curPrice?'$'+fmt(curPrice):'---';
+  const b=document.getElementById('modeBadge');
+  if(manualHigh)       b.innerHTML='<span class="badge manual">✏️ 수동</span>';
+  else if(autoHigh)    b.innerHTML='<span class="badge auto"><span class="dot"></span>자동</span>';
+  else                 b.innerHTML='';
 }
 
-// ── RENDER TABLE ──────────────────────────────────────────────────────────────
-function updateCalc() {
+function updateCalc(){
   const asset=parseFloat(document.getElementById('assetInput').value)||0;
   const per=asset/20;
   document.getElementById('perTradeLarge').textContent='$'+fmt(per);
@@ -423,22 +408,19 @@ function updateCalc() {
   renderTable();
 }
 
-function renderTable() {
+function renderTable(){
   const body=document.getElementById('tableBody');
-  const high=effectiveHigh();
-  if (!high) {
+  const h=effectiveHigh();
+  if(!h){
     body.innerHTML='<div style="padding:22px;text-align:center;color:var(--dim);font-size:13px;">최고가를 불러오거나 직접 입력해주세요</div>';
-    document.getElementById('totalQty').textContent='0주';
-    return;
+    document.getElementById('totalQty').textContent='0주'; return;
   }
   const asset=parseFloat(document.getElementById('assetInput').value)||0;
   const per=asset/20;
-  let totalQty=0, html='';
+  let total=0, html='';
   DROP.forEach((drop,i)=>{
-    const bp=high*(1+drop);
-    const qty=per>0?Math.floor(per/bp):0;
-    const amt=qty*bp;
-    totalQty+=qty;
+    const bp=h*(1+drop), qty=per>0?Math.floor(per/bp):0, amt=qty*bp;
+    total+=qty;
     const pct=Math.abs(drop*100).toFixed(0);
     let bg,col;
     if(i<3){bg='rgba(0,255,136,0.1)';col='#00ff88';}
@@ -448,273 +430,240 @@ function renderTable() {
       +'<div class="rnum">'+(i+1)+'차</div>'
       +'<div><div class="rprice">$'+fmt(bp)+'</div>'
       +'<span class="rbadge" style="background:'+bg+';color:'+col+'">▼'+pct+'%</span></div>'
-      +'<div class="rt"><div class="rqty">'+qty.toLocaleString()+'<span style="font-size:9px;color:var(--dim)"> 주</span></div></div>'
+      +'<div class="rt"><div class="rqty">'+qty.toLocaleString()
+      +'<span style="font-size:9px;color:var(--dim)"> 주</span></div></div>'
       +'<div class="rt"><div class="ramt">$'+fmt(amt)+'</div></div>'
       +'</div>';
   });
   body.innerHTML=html;
-  document.getElementById('totalQty').textContent=totalQty.toLocaleString()+'주';
+  document.getElementById('totalQty').textContent=total.toLocaleString()+'주';
 }
 
-// ── CHART ─────────────────────────────────────────────────────────────────────
-function drawChart() {
+// ── 차트 ──────────────────────────────────────────────────────────────────────
+function drawChart(){
   const high=effectiveHigh();
-  if (!high||priceHistory.length<2) return;
+  if(!high||priceHist.length<2) return;
 
-  const placeholder=document.getElementById('chartPlaceholder');
-  const canvas=document.getElementById('priceChart');
-  const legend=document.getElementById('chartLegend');
-  placeholder.style.display='none';
-  canvas.style.display='block';
-  legend.style.display='flex';
+  const ph=document.getElementById('chartPh');
+  const cv=document.getElementById('priceChart');
+  const lg=document.getElementById('chartLegend');
+  ph.style.display='none'; cv.style.display='block'; lg.style.display='flex';
 
-  const dpr=window.devicePixelRatio||1;
-  const W=canvas.parentElement.clientWidth;
-  const H=230;
-  canvas.width=W*dpr; canvas.height=H*dpr;
-  canvas.style.width=W+'px'; canvas.style.height=H+'px';
-  const ctx=canvas.getContext('2d');
-  ctx.scale(dpr,dpr);
+  const dpr=window.devicePixelRatio||1, W=cv.parentElement.clientWidth, H=230;
+  cv.width=W*dpr; cv.height=H*dpr; cv.style.width=W+'px'; cv.style.height=H+'px';
+  const ctx=cv.getContext('2d'); ctx.scale(dpr,dpr);
 
-  const padL=50,padR=38,padT=24,padB=22;
-  const cW=W-padL-padR, cH=H-padT-padB;
+  const pL=50,pR=38,pT=24,pB=22, cW=W-pL-pR, cH=H-pT-pB;
+  const closes=priceHist.map(p=>p.c), labels=priceHist.map(p=>p.label), n=closes.length;
 
-  const closes=priceHistory.map(p=>p.c);
-  const labels=priceHistory.map(p=>p.label);
-  const n=closes.length;
-
-  // Y range: from lowest buy level to a bit above high
   const lowestLvl=high*(1+DROP[19]);
   const dataMin=Math.min(...closes);
   const minP=Math.min(lowestLvl*0.985, dataMin*0.998);
   const maxP=high*1.012;
   const pRange=maxP-minP;
 
-  const px=i=>padL+(n<2?cW/2:(i/(n-1))*cW);
-  const py=p=>padT+cH-((p-minP)/pRange)*cH;
+  const px=i=>pL+(n<2?cW/2:(i/(n-1))*cW);
+  const py=p=>pT+cH-((p-minP)/pRange)*cH;
 
   ctx.clearRect(0,0,W,H);
 
   // Grid
   ctx.strokeStyle='rgba(30,45,85,0.7)'; ctx.lineWidth=0.5; ctx.setLineDash([]);
-  for(let g=0;g<=5;g++){const y=padT+(g/5)*cH; ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(padL+cW,y); ctx.stroke();}
+  for(let g=0;g<=5;g++){const y=pT+(g/5)*cH; ctx.beginPath(); ctx.moveTo(pL,y); ctx.lineTo(pL+cW,y); ctx.stroke();}
 
-  // Buy level lines
+  // 매수 레벨 라인
   DROP.forEach((drop,i)=>{
-    const lvl=high*(1+drop);
-    if(lvl<minP||lvl>maxP) return;
-    const y=py(lvl), pct=Math.abs(drop*100).toFixed(0);
-    const color=i<3?'rgba(0,255,136,0.65)':i<10?'rgba(255,107,53,0.55)':'rgba(255,68,102,0.50)';
-    ctx.save(); ctx.setLineDash([3,4]); ctx.strokeStyle=color; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(padL+cW,y); ctx.stroke(); ctx.restore();
+    const lp=high*(1+drop); if(lp<minP||lp>maxP) return;
+    const y=py(lp), pct=Math.abs(drop*100).toFixed(0);
+    const clr=i<3?'rgba(0,255,136,0.65)':i<10?'rgba(255,107,53,0.55)':'rgba(255,68,102,0.50)';
+    ctx.save(); ctx.setLineDash([3,4]); ctx.strokeStyle=clr; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pL,y); ctx.lineTo(pL+cW,y); ctx.stroke(); ctx.restore();
     if(i%2===0||i<3){
       ctx.font="bold 8px 'Share Tech Mono',monospace";
-      ctx.fillStyle=color; ctx.textAlign='left';
-      ctx.fillText('▼'+pct+'%',padL+cW+2,y+3);
+      ctx.fillStyle=clr; ctx.textAlign='left'; ctx.fillText('▼'+pct+'%',pL+cW+2,y+3);
     }
   });
 
-  // High price line
-  const highY=py(high);
+  // 최고가 라인
+  const hy=py(high);
   ctx.save(); ctx.setLineDash([6,3]); ctx.strokeStyle='rgba(255,215,0,0.9)'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(padL,highY); ctx.lineTo(padL+cW,highY); ctx.stroke(); ctx.restore();
-  ctx.fillStyle='rgba(10,14,26,0.8)'; ctx.fillRect(padL+2,highY-12,36,13);
-  ctx.font="bold 8px 'Share Tech Mono',monospace"; ctx.fillStyle='#ffd700'; ctx.textAlign='left';
-  ctx.fillText('HIGH',padL+4,highY-2);
+  ctx.beginPath(); ctx.moveTo(pL,hy); ctx.lineTo(pL+cW,hy); ctx.stroke(); ctx.restore();
+  ctx.fillStyle='rgba(10,14,26,0.85)'; ctx.fillRect(pL+2,hy-12,36,13);
+  ctx.font="bold 8px 'Share Tech Mono',monospace"; ctx.fillStyle='#ffd700'; ctx.textAlign='left'; ctx.fillText('HIGH',pL+4,hy-2);
 
-  // Manual override line if active
-  if (manualHighPrice && autoHighPrice && Math.abs(manualHighPrice-autoHighPrice)>0.01) {
-    const mY=py(manualHighPrice);
-    ctx.save(); ctx.setLineDash([4,4]); ctx.strokeStyle='rgba(255,215,0,0.4)'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(padL,mY); ctx.lineTo(padL+cW,mY); ctx.stroke(); ctx.restore();
-  }
-
-  // Price area
+  // 가격 영역
   if(n>1){
-    const grad=ctx.createLinearGradient(0,padT,0,padT+cH);
+    const grad=ctx.createLinearGradient(0,pT,0,pT+cH);
     grad.addColorStop(0,'rgba(0,212,255,0.2)'); grad.addColorStop(1,'rgba(0,212,255,0.01)');
     ctx.beginPath(); ctx.moveTo(px(0),py(closes[0]));
     for(let i=1;i<n;i++) ctx.lineTo(px(i),py(closes[i]));
-    ctx.lineTo(px(n-1),padT+cH); ctx.lineTo(px(0),padT+cH);
+    ctx.lineTo(px(n-1),pT+cH); ctx.lineTo(px(0),pT+cH);
     ctx.closePath(); ctx.fillStyle=grad; ctx.fill();
 
     ctx.beginPath(); ctx.moveTo(px(0),py(closes[0]));
     for(let i=1;i<n;i++) ctx.lineTo(px(i),py(closes[i]));
     ctx.strokeStyle='#00d4ff'; ctx.lineWidth=2; ctx.lineJoin='round'; ctx.setLineDash([]); ctx.stroke();
 
-    // Current dot
     const lx=px(n-1), ly=py(closes[n-1]);
     ctx.beginPath(); ctx.arc(lx,ly,5,0,Math.PI*2); ctx.fillStyle='rgba(0,212,255,0.2)'; ctx.fill();
     ctx.beginPath(); ctx.arc(lx,ly,3,0,Math.PI*2);
     ctx.fillStyle='#00d4ff'; ctx.strokeStyle='#0a0e1a'; ctx.lineWidth=1.5; ctx.setLineDash([]); ctx.fill(); ctx.stroke();
 
-    // Price label
-    const curP=closes[n-1], labelX=Math.min(lx,padL+cW-2);
+    const curP=closes[n-1], lbX=Math.min(lx,pL+cW-2);
     ctx.font="bold 9px 'Share Tech Mono',monospace";
     const lw=ctx.measureText('$'+curP.toFixed(2)).width+6;
-    ctx.fillStyle='#0a0e1a'; ctx.fillRect(labelX-lw-1,ly-17,lw+2,13);
-    ctx.fillStyle='#00d4ff'; ctx.textAlign='right';
-    ctx.fillText('$'+curP.toFixed(2),labelX-2,ly-7);
+    ctx.fillStyle='#0a0e1a'; ctx.fillRect(lbX-lw-1,ly-17,lw+2,13);
+    ctx.fillStyle='#00d4ff'; ctx.textAlign='right'; ctx.fillText('$'+curP.toFixed(2),lbX-2,ly-7);
   }
 
-  // Y axis
+  // Y축
   ctx.setLineDash([]); ctx.textAlign='right';
   ctx.font="8px 'Share Tech Mono',monospace"; ctx.fillStyle='rgba(90,112,144,0.85)';
   for(let g=0;g<=5;g++){
     const p=minP+(pRange*(5-g)/5);
-    ctx.fillText('$'+p.toFixed(1),padL-3,padT+(g/5)*cH+3);
+    ctx.fillText('$'+p.toFixed(1),pL-3,pT+(g/5)*cH+3);
   }
-
-  // X axis
+  // X축
   if(labels.length>1){
-    ctx.textAlign='center'; ctx.fillStyle='rgba(90,112,144,0.85)';
-    ctx.font="8px 'Share Tech Mono',monospace";
+    ctx.textAlign='center'; ctx.font="8px 'Share Tech Mono',monospace"; ctx.fillStyle='rgba(90,112,144,0.85)';
     [0,Math.floor(labels.length/2),labels.length-1].forEach(idx=>{
-      if(labels[idx]) ctx.fillText(labels[idx],px(idx),padT+cH+14);
+      if(labels[idx]) ctx.fillText(labels[idx],px(idx),pT+cH+14);
     });
   }
 }
 
-function drawChartStatic(price) {
+function drawStatic(price){
   const n=80;
   const data=Array.from({length:n},(_,i)=>price+Math.sin(i*0.3)*price*0.003+(i-n/2)*price*0.00006);
-  data[data.length-1]=price;
-  priceHistory=data.map((c,i)=>({c,h:c,label:i===0?'PREV':i===n-1?'NOW':''}));
+  data[n-1]=price;
+  priceHist=data.map((c,i)=>({c,label:i===0?'PREV':i===n-1?'NOW':''}));
   drawChart();
 }
 
-// ── FETCH ─────────────────────────────────────────────────────────────────────
-async function fetchData(showSpinner=false) {
+// ── 데이터 조회 ───────────────────────────────────────────────────────────────
+// ① Finnhub: 현재가 + 당일 고가 (quote)
+// ② Yahoo Finance (2d/5m): 차트용 캔들 + 최고가 계산
+async function fetchData(spinner=false){
   const apiKey=getApiKey();
-  if (!apiKey) return;
-  if (isLoading) return;
-  isLoading=true;
-  if(showSpinner) document.getElementById('loadingOverlay').classList.add('show');
+  if(!apiKey||busy) return;
+  busy=true;
+  if(spinner) document.getElementById('ov').classList.add('show');
 
-  try {
+  try{
     const sym='SOXL';
-    const cutoff=getYestOpenTS();
-    const nowTs=Math.floor(Date.now()/1000);
 
-    // Quote
+    // ① Finnhub quote — 현재가, 당일 고가
     const qRes=await fetch('https://finnhub.io/api/v1/quote?symbol='+sym+'&token='+apiKey,
       {signal:AbortSignal.timeout(10000)});
     if(!qRes.ok){
-      if(qRes.status===401) throw new Error('API Key가 올바르지 않습니다.');
-      throw new Error('서버 오류 ('+qRes.status+')');
+      if(qRes.status===401) throw new Error('API Key가 올바르지 않습니다. 🔑 설정을 확인해주세요.');
+      throw new Error('Finnhub 오류 ('+qRes.status+')');
     }
-    const quote=await qRes.json();
-    if(!quote||!quote.c) throw new Error('가격 데이터 없음');
+    const q=await qRes.json();
+    if(!q||!q.c) throw new Error('가격 데이터를 받지 못했습니다.');
+    curPrice=q.c;
+    let maxHigh=q.h||q.c;   // 당일 고가를 기본값으로
 
-    currentPrice=quote.c;
-
-    // Candle (5분봉)
-    const cRes=await fetch(
-      'https://finnhub.io/api/v1/stock/candle?symbol='+sym+'&resolution=5&from='+Math.floor(cutoff)+'&to='+nowTs+'&token='+apiKey,
-      {signal:AbortSignal.timeout(10000)});
-    const candle=cRes.ok?await cRes.json():null;
-
-    let maxHigh=quote.h||quote.c;
-
-    if(candle&&candle.s==='ok'&&candle.c&&candle.c.length>0){
-      const newHistory=[];
-      for(let i=0;i<candle.t.length;i++){
-        if(candle.t[i]<cutoff) continue;
-        if(candle.h[i]>maxHigh) maxHigh=candle.h[i];
-        newHistory.push({t:candle.t[i], c:candle.c[i], h:candle.h[i], label:toETLabel(candle.t[i])});
+    // ② Yahoo Finance — 어제 정규장부터 현재까지 5분봉 (차트 + 정확한 최고가)
+    const cutoff=getYestOpenTS();
+    try{
+      const yUrl='https://query1.finance.yahoo.com/v8/finance/chart/'+sym+'?interval=5m&range=2d';
+      const yProxy='https://api.allorigins.win/raw?url='+encodeURIComponent(yUrl);
+      const yRes=await fetch(yProxy,{signal:AbortSignal.timeout(12000)});
+      if(yRes.ok){
+        const yData=await yRes.json();
+        const result=yData?.chart?.result?.[0];
+        const quotes=result?.indicators?.quote?.[0];
+        const ts=result?.timestamp;
+        if(quotes&&ts){
+          const newHist=[];
+          for(let i=0;i<ts.length;i++){
+            if(ts[i]<cutoff) continue;
+            if(quotes.high?.[i]>maxHigh) maxHigh=quotes.high[i];
+            if(quotes.close?.[i]!=null)
+              newHist.push({c:quotes.close[i], label:toETLabel(ts[i])});
+          }
+          if(newHist.length>1){
+            newHist[newHist.length-1].c=q.c; // 마지막은 Finnhub 현재가로
+            priceHist=newHist;
+          }
+        }
       }
-      if(newHistory.length>0){
-        // 마지막 포인트를 현재가로
-        newHistory[newHistory.length-1].c=quote.c;
-        priceHistory=newHistory;
-      }
+    }catch(e){
+      // Yahoo 실패해도 최고가/현재가는 Finnhub 것 사용, 차트는 static으로
+      console.warn('Yahoo candle 실패:', e.message);
     }
 
-    autoHighPrice=maxHigh;
+    autoHigh=maxHigh;
 
-    // 업데이트 시간
+    // 시간 표시
     const now=new Date();
     document.getElementById('lastUpdateLabel').textContent=
-      '업데이트: '+now.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+      now.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
 
-    renderHighPrice();
-    renderTable();
-    drawChart();
+    renderHigh(); renderTable();
+    if(priceHist.length>1) drawChart(); else drawStatic(autoHigh);
 
-  } catch(err) {
+  }catch(err){
     showMsg('❌ '+err.message,'error');
-  } finally {
-    isLoading=false;
-    if(showSpinner) document.getElementById('loadingOverlay').classList.remove('show');
+  }finally{
+    busy=false;
+    if(spinner) document.getElementById('ov').classList.remove('show');
   }
 }
 
-// ── AUTO REFRESH ──────────────────────────────────────────────────────────────
-function startAutoFetch() {
-  stopAutoFetch();
-  fetchData(true); // 즉시 첫 조회
-  scheduleNext();
+// ── 자동 갱신 ─────────────────────────────────────────────────────────────────
+function startAuto(){
+  stopAuto();
+  fetchData(true);
+  schedNext();
 }
-
-function scheduleNext() {
-  nextUpdateAt=Date.now()+AUTO_INTERVAL_MS;
-  autoTimer=setTimeout(()=>{
-    fetchData(false);
-    scheduleNext();
-  }, AUTO_INTERVAL_MS);
-  startCountdown();
+function schedNext(){
+  nextAt=Date.now()+REFRESH_MS;
+  autoTimer=setTimeout(()=>{ fetchData(false); schedNext(); }, REFRESH_MS);
+  startCnt();
 }
-
-function stopAutoFetch() {
-  if(autoTimer){clearTimeout(autoTimer); autoTimer=null;}
-  if(countdownTimer){clearInterval(countdownTimer); countdownTimer=null;}
+function stopAuto(){
+  if(autoTimer){clearTimeout(autoTimer);autoTimer=null;}
+  if(cntTimer){clearInterval(cntTimer);cntTimer=null;}
 }
-
-function startCountdown() {
-  if(countdownTimer) clearInterval(countdownTimer);
-  countdownTimer=setInterval(()=>{
-    const remaining=Math.max(0,Math.round((nextUpdateAt-Date.now())/1000));
+function startCnt(){
+  if(cntTimer) clearInterval(cntTimer);
+  cntTimer=setInterval(()=>{
+    const rem=Math.max(0,Math.round((nextAt-Date.now())/1000));
     const el=document.getElementById('nextUpdateLabel');
-    if(el) el.textContent=remaining>0?'다음 업데이트: '+remaining+'초 후':'업데이트 중...';
+    if(el) el.textContent=rem>0?'다음 갱신: '+rem+'초 후':'갱신 중...';
   },1000);
 }
-
-function manualFetch() {
+function manualFetch(){
   if(!getApiKey()){
-    showMsg('⚠ API Key가 필요합니다. 상단 🔑 설정을 눌러 입력해주세요.','error');
-    document.getElementById('apikeyBody').classList.add('open');
-    return;
+    showMsg('⚠ API Key가 필요합니다. 🔑 설정을 눌러주세요.','error');
+    document.getElementById('apikeyBody').classList.add('open'); return;
   }
-  // 타이머 리셋 후 즉시 조회
-  stopAutoFetch();
-  fetchData(true);
-  scheduleNext();
+  stopAuto(); fetchData(true); schedNext();
 }
 
-// ── MESSAGES ──────────────────────────────────────────────────────────────────
-let msgTimer=null;
-function showMsg(text,type='error') {
+// ── 메시지 ────────────────────────────────────────────────────────────────────
+let msgT=null;
+function showMsg(txt,type='error'){
   const el=document.getElementById('msgBox');
-  el.className='msg show '+type;
-  el.textContent=text;
-  if(msgTimer) clearTimeout(msgTimer);
-  msgTimer=setTimeout(()=>el.classList.remove('show'),4000);
+  el.className='msg show '+type; el.textContent=txt;
+  if(msgT) clearTimeout(msgT);
+  msgT=setTimeout(()=>el.classList.remove('show'),4500);
 }
 
-// ── RESIZE ────────────────────────────────────────────────────────────────────
+// ── 리사이즈 ──────────────────────────────────────────────────────────────────
 window.addEventListener('resize',()=>{
-  if(effectiveHigh()){
-    if(priceHistory.length>1) drawChart();
-    else if(effectiveHigh()) drawChartStatic(effectiveHigh());
-  }
+  if(!effectiveHigh()) return;
+  if(priceHist.length>1) drawChart(); else drawStatic(effectiveHigh());
 });
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
-(function init(){
+// ── 초기화 ────────────────────────────────────────────────────────────────────
+(function(){
   const key=getApiKey();
-  renderApiKeyStatus(key);
+  renderKeyStatus(key);
   renderTable();
-  if(key) startAutoFetch();
+  if(key) startAuto();
 })();
 </script>
 </body>
